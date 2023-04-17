@@ -1,0 +1,113 @@
+Permisos
+========
+
+Usuarios
+--------
+	Encargado
+		A:   sí
+		B:   sí
+		M:   sí
+		L/B: sí
+	Empleado:
+		A:   sí
+		B:   sí
+		M:   sí
+		L/B: sí
+	Cliente:
+		A:   no
+		B:   no
+		M:   no
+		L/B: no
+
+Productos
+---------
+	Encargado
+		A:   	sí
+		B:   	sí
+		M:   	sí
+		Menú/B: sí
+	Empleado:
+		A:   	sí
+		B:   	sí
+		M:   	sí
+		Menú/B: sí
+	Cliente:
+		A:   	no
+		B:   	no
+		M:   	no
+		Menú/B: sí
+
+Pedidos
+-------
+	Encargado
+		A:   no
+		C:   sí		C: cancelar
+		M:   sí
+		L/B: sí
+	Empleado:
+		A:   no
+		C:   sí
+		M:   sí
+		L/B: sí
+	Cliente:
+		A:   sí
+		C:   sí
+		M:   sí
+		L/B: sí
+
+Observaciones
+=============
+Usuarios
+--------
+	Encargado
+		A:   no pueden haber 2 usuarios con el mismo correo. Cualquier tipo de usuario
+		B:   no se puede borrar a él mismo. Si se trata de un cliente, no puede haber un pedido con el mismo
+		M:   no pueden haber 2 usuarios con el mismo correo. Si es él mismo no se puede cambiar el tipo
+		L/B: -
+	Empleado:
+		A:   no pueden haber 2 usuarios con el mismo correo. Sólo clientes
+		B:   sólo clientes 
+		M:   no pueden haber 2 usuarios con el mismo correo. Sólo clientes
+		L/B: -
+	Cliente:
+		A:   no
+		B:   no
+		M:   no
+		L/B: no
+
+Productos
+---------
+	Encargado
+		A:   	no pueden haber 2 productos con el mismo código
+		B:   	no puede haber un pedido con el mismo
+		M:   	no pueden haber 2 productos con el mismo código
+		Menú/B: sí
+	Empleado:
+		A:   	no pueden haber 2 productos con el mismo código
+		B:   	no puede haber un pedido con el mismo
+		M:   	no pueden haber 2 productos con el mismo código
+		Menú/B: sí
+	Cliente:
+		A:   	no
+		B:   	no
+		M:   	no
+		Menú/B: -
+
+Pedidos
+-------
+	Encargado
+		A:   no
+		C:   sí, pero sólo si el estado es Creando
+		M:   sí, pero sólo cambiarle el estado (al siguiente)		
+		L/B: todos
+	Empleado:
+		A:   no
+		C:   sí, pero sólo si el estado es Creando
+		M:   sí, pero sólo cambiarle el estado (al siguiente)
+		L/B: todos
+	Cliente:
+		A:   sí
+		C:   sí, pero los propios y si el estado es Creando
+		M:   sí, pero sólo ABM de productos, no cambiarle el estado
+		L/B: sí, pero los propios
+
