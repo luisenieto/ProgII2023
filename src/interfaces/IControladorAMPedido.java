@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
  */
 public interface IControladorAMPedido {
     public static final String TITULO_NUEVO = "Nuevo pedido"; 
+    public static final String TITULO_MODIFICAR = "Modificar pedido"; 
     
     /**
      * Acción a ejecutar cuando se selecciona el botón Agregar

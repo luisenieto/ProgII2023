@@ -217,6 +217,17 @@ public class GestorPermisos implements IGestorPermisos {
     }
 
     /**
+     * Un encargado sí puede modificar el estado de los pedidos
+     * Un empleado sí puede modificar el estado de los pedidos
+     * Un cliente no puede modificar el estado de los pedidos
+    */
+    @Override
+    public boolean cambiarEstadoPedidos(Usuario usuarioLogueado) {
+        return !(usuarioLogueado.verPerfil() == Perfil.CLIENTE);
+    }
+
+    
+    /**
      * Un encargado sí puede cancelar pedidos
      * Un empleado sí puede cancelar pedidos
      * Un cliente sí puede cancelar sus pedidos, los de otro cliente no

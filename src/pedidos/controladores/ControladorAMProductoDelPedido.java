@@ -41,9 +41,7 @@ public class ControladorAMProductoDelPedido implements IControladorAMProductoDel
         this.productoDelPedidoAModificar = productoDelPedidoAModificar;
         this.ventana.setLocationRelativeTo(null);   
         this.configurarComboCategorias();
-        //Categoria categoria = ((ModeloComboCategorias)this.ventana.verCategoria().getModel()).obtenerCategoria();
-        //this.configurarComboProductos(categoria);
-        //this.configurarCampoCantidad();
+
 //        this.ventana.setTitle(this.generarTituloVentana());                
         
         this.ventana.setVisible(true);  
@@ -57,12 +55,14 @@ public class ControladorAMProductoDelPedido implements IControladorAMProductoDel
         this.ventana.verCategoria().setModel(mcc); 
         Categoria categoria = null;
         if (this.productoDelPedidoAModificar == null) { //alta
-            categoria = Categoria.values()[0]; //se toma la primera categoria
+            categoria = Categoria.values()[0]; //se selecciona la primera categoria
             mcc.seleccionarCategoria(categoria);
         }
         else { //modificación
-            mcc.seleccionarCategoria(this.productoDelPedidoAModificar.verProducto().verCategoria());
+            categoria = this.productoDelPedidoAModificar.verProducto().verCategoria();
+            mcc.seleccionarCategoria(categoria);
             this.ventana.verCategoria().setEnabled(false);
+            //sólo se puede modificar la cantidad
         }
         this.configurarComboProductos(categoria);
     }
@@ -95,15 +95,6 @@ public class ControladorAMProductoDelPedido implements IControladorAMProductoDel
         }
     }
     
-    /**
-     * Configura el campo cantidad
-    */
-//    private void configurarCampoCantidad() {
-//        if (this.productoDelPedidoAModificar != null) { //modificación
-//           this.ventana.verCantidad().setText(Integer.toString(this.productoDelPedidoAModificar.verCantidad()));
-//        } 
-//    }
-
     @Override
     public void seleccionarCategoria(ItemEvent evt) { 
         if (evt.getStateChange() == ItemEvent.SELECTED) {                        
@@ -121,18 +112,24 @@ public class ControladorAMProductoDelPedido implements IControladorAMProductoDel
     public void btnAceptarClic(ActionEvent evt) {
         Producto producto = ((ModeloComboProductos)this.ventana.verProducto().getModel()).obtenerProducto();
         int cantidad = Integer.parseInt(this.ventana.verCantidad().getText().trim());        
-        //faltan las comprobaciones
+        //faltan las comprobaciones        
         if (this.productoDelPedidoAModificar == null) { //agregado de un producto al pedido
+            //Al agregar un producto, puede ser que el mismo no esté o que ya esté en la lista de productos del pedido
+            //si no está, se lo agrega
+            //si ya está, se suman la cantidades (para que la lista no quede con prod1, cant: 1, prod1: cant: 3 por ejemplo
             ProductoDelPedido pdp = new ProductoDelPedido(producto, cantidad);
-            if (!this.productosDelPedido.contains(pdp))
-                this.productosDelPedido.add(new ProductoDelPedido(producto, cantidad));
-//            else { //mensaje diciendo que ya está ese producto agregado
-//                
-//            }
+            if (!this.productosDelPedido.contains(pdp)) //no está en la lista
+                this.productosDelPedido.add(pdp);
+            else { //ya está
+                int posicion = this.productosDelPedido.indexOf(pdp);
+                ProductoDelPedido pdpOriginal = this.productosDelPedido.get(posicion);
+                pdpOriginal.asignarCantidad(pdpOriginal.verCantidad() + cantidad);
+                this.productosDelPedido.set(posicion, pdpOriginal);
+            }
         }
-        else { //modificación de un producto al pedido
-            this.productoDelPedidoAModificar.asignarCantidad(cantidad);
+        else { //modificación del producto de un pedido
             int posicion = this.productosDelPedido.indexOf(this.productoDelPedidoAModificar);
+            this.productoDelPedidoAModificar.asignarCantidad(cantidad);
             this.productosDelPedido.set(posicion, this.productoDelPedidoAModificar);
         }
         this.ventana.dispose();

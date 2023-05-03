@@ -117,8 +117,13 @@ public class VentanaUsuarios extends JDialog {
         jLabel1.setText("Apellido:");
 
         txtApellido.setToolTipText("Nombre del área");
+        txtApellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtApellidoPresionarEnter(evt);
+            }
+        });
         txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtApellidoPresionarTecla(evt);
             }
         });
@@ -236,13 +241,17 @@ public class VentanaUsuarios extends JDialog {
         this.controlador.btnBuscarClic(evt);
     }//GEN-LAST:event_btnBuscarClic
 
-    private void txtApellidoPresionarTecla(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoPresionarTecla
-        this.controlador.txtApellidoPresionarTecla(evt);
-    }//GEN-LAST:event_txtApellidoPresionarTecla
-
     private void btnBorrarClic(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarClic
         this.controlador.btnBorrarClic(evt);
     }//GEN-LAST:event_btnBorrarClic
+
+    private void txtApellidoPresionarEnter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoPresionarEnter
+        this.controlador.txtApellidoPresionarEnter(evt);
+    }//GEN-LAST:event_txtApellidoPresionarEnter
+
+    private void txtApellidoPresionarTecla(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoPresionarTecla
+        this.controlador.txtApellidoPresionarTecla(evt);
+    }//GEN-LAST:event_txtApellidoPresionarTecla
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

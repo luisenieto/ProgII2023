@@ -169,7 +169,8 @@
             <Property name="toolTipText" type="java.lang.String" value="Nombre del &#xe1;rea"/>
           </Properties>
           <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtApellidoPresionarTecla"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtApellidoPresionarEnter"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtApellidoPresionarTecla"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnBuscar">

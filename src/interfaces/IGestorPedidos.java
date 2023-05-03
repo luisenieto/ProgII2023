@@ -38,6 +38,7 @@ public interface IGestorPedidos {
     public static final String ERROR_CANCELAR = "No se puede cancelar el pedido en este estado"; 
     public static final String ERROR_PERMISOS = "No se tienen los permisos para realizar esta funcionalidad";  
     public static final String PEDIDOS_DUPLICADOS = "Ya existe un pedido con ese número";
+    public static final String PEDIDO_INEXISTENTE = "No existe el pedido especificado";   
     public static final String VALIDACION_EXITO = "El pedido tiene los datos correctos";
     
     /**
@@ -72,13 +73,22 @@ public interface IGestorPedidos {
      * Que se pueda modificar un pedido, o no, depende de los permisos del usuario logueado
      * @param usuarioLogueado usuario actualmente logueado
      * @param pedidoAModificar pedido a modificar
-     * @param fecha fecha del pedido
-     * @param hora hora del pedido
      * @param productosDelPedido lista con los productos y sus cantidades
-     * @param cliente cliente del pedido
-     * @return cadena con el resultado de la operación (EXITO || ESCRITURA_ERROR || PEDIDOS_DUPLICADOS || ERROR_FECHA || ERROR_HORA || ERROR_PRODUCTOS_DEL_PEDIDO || ERROR_CLIENTE)
+     * @return cadena con el resultado de la operación (ERROR_PERMISOS || PEDIDO_INEXISTENTE || ERROR_PRODUCTOS_DEL_PEDIDO || ESCRITURA_ERROR || EXITO)
     */                                                                    
-    public String modificarPedido(Usuario usuarioLogueado, Pedido pedidoAModificar, LocalDate fecha, LocalTime hora, List<ProductoDelPedido> productosDelPedido, Cliente cliente);
+    public String modificarPedido(Usuario usuarioLogueado, Pedido pedidoAModificar, List<ProductoDelPedido> productosDelPedido);
+    
+    /**
+     * Cambia el estado de un pedido
+     * Si el pedido está en el estado Estado.CREADO lo pasa a Estado.PROCESANDO
+     * Si el pedido está en el estado Estado.PROCESANDO lo pasa a Estado.ENTREGADO
+     * Que se pueda cambiar el estado de un pedido, o no, depende de los permisos del usuario logueado
+     * @param usuarioLogueado usuario actualmente logueado
+     * @param pedidoAModificar pedido a modificar
+     * @return cadena con el resultado de la operación (PEDIDO_INEXISTENTE || ERROR_PERMISOS || ESCRITURA_ERROR || EXITO)
+    */
+    public String cambiarEstado(Usuario usuarioLogueado, Pedido pedidoAModificar);
+    
     
     /**
      * Devuelve todos los pedidos ordenados por ....
@@ -108,10 +118,10 @@ public interface IGestorPedidos {
     public String cancelarPedido(Usuario usuarioLogueado, Pedido pedido);
     
     /**
-     * Devuelve true si existe el producto especificado, false en caso contrario
-     * @param producto producto a buscar
-     * @return boolean  - true si existe el producto especificado, false en caso contrario
+     * Devuelve true si existe el pedido especificado, false en caso contrario
+     * @param pedido pedido a buscar
+     * @return boolean  - true si existe el pedido especificado, false en caso contrario
     */
-//    public boolean existeEsteProducto(Producto producto);
+    public boolean existeEstePedido(Pedido pedido);
     
 }

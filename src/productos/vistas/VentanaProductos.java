@@ -6,6 +6,7 @@
 package productos.vistas;
 
 import interfaces.IControladorProductos;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -121,12 +122,14 @@ public class VentanaProductos extends JDialog {
         jLabel1.setText("Descripción:");
 
         txtDescripcion.setToolTipText("Nombre del área");
-        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtDescripcionPresionarTecla1(evt);
+        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescripcionPresionarEnter(evt);
             }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionPresionarTecla(evt);
+        });
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyReleased(evt);
             }
         });
 
@@ -239,10 +242,6 @@ public class VentanaProductos extends JDialog {
         this.controlador.btnBuscarClic(evt);
     }//GEN-LAST:event_btnBuscarClic
 
-    private void txtDescripcionPresionarTecla(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionPresionarTecla
-        //this.controlador.txtDescripcionPresionarTecla(evt);
-    }//GEN-LAST:event_txtDescripcionPresionarTecla
-
     private void ventanaObtenerFoco(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_ventanaObtenerFoco
         this.controlador.ventanaObtenerFoco(evt);
     }//GEN-LAST:event_ventanaObtenerFoco
@@ -251,9 +250,13 @@ public class VentanaProductos extends JDialog {
         this.controlador.btnBorrarClic(evt);
     }//GEN-LAST:event_btnBorrarClic
 
-    private void txtDescripcionPresionarTecla1(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionPresionarTecla1
+    private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
         this.controlador.txtDescripcionPresionarTecla(evt);
-    }//GEN-LAST:event_txtDescripcionPresionarTecla1
+    }//GEN-LAST:event_txtDescripcionKeyReleased
+
+    private void txtDescripcionPresionarEnter(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionPresionarEnter
+        this.controlador.txtDescripcionPresionarEnter(evt);
+    }//GEN-LAST:event_txtDescripcionPresionarEnter
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

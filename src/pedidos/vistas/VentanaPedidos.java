@@ -9,6 +9,8 @@ import interfaces.IControladorPedidos;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -50,6 +52,14 @@ public class VentanaPedidos extends JDialog {
     public JButton verBuscar() {
         return this.btnBuscar;
     }
+    
+    public JPopupMenu verPopup() {
+        return this.popupMenu;
+    }
+    
+    public JMenuItem verItemCambiarEstado() {
+        return this.itemCambiarEstado;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,6 +70,8 @@ public class VentanaPedidos extends JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenu = new javax.swing.JPopupMenu();
+        itemCambiarEstado = new javax.swing.JMenuItem();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaPedidos = new javax.swing.JTable();
@@ -70,6 +82,16 @@ public class VentanaPedidos extends JDialog {
         btnBuscar = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
+
+        popupMenu.setLabel("");
+
+        itemCambiarEstado.setText("Cambiar estado");
+        itemCambiarEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMenuClic(evt);
+            }
+        });
+        popupMenu.add(itemCambiarEstado);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pedidos");
@@ -254,6 +276,10 @@ public class VentanaPedidos extends JDialog {
     private void txtDescripcionPresionarTecla1(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionPresionarTecla1
         //this.controlador.txtDescripcionPresionarTecla(evt);
     }//GEN-LAST:event_txtDescripcionPresionarTecla1
+
+    private void itemMenuClic(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMenuClic
+        this.controlador.itemMenuClic(evt);
+    }//GEN-LAST:event_itemMenuClic
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -262,9 +288,11 @@ public class VentanaPedidos extends JDialog {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnVolver;
+    private javax.swing.JMenuItem itemCambiarEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable tablaPedidos;
     private javax.swing.JTextField txtDescripcion;
     // End of variables declaration//GEN-END:variables

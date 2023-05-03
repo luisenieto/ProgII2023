@@ -211,10 +211,12 @@ public class GestorProductos implements IGestorProductos {
     public List<Producto> buscarProductos(Usuario usuarioLogueado, String descripcion) {
         List<Producto> productosBuscados = new ArrayList<>();
         IGestorPermisos gp = GestorPermisos.instanciar();
-        if (gp.borrarProductos(usuarioLogueado)) {            
-            if (descripcion != null) {            
+        if (gp.buscarProductos(usuarioLogueado)) {            
+            if (descripcion != null) { 
                 for(Producto producto : this.productos) {
-                    if (producto.verDescripcion().toLowerCase().contains(descripcion.toLowerCase()))
+                    if (producto.verDescripcion().isEmpty())
+                        productosBuscados.add(producto);
+                    else if (producto.verDescripcion().toLowerCase().contains(descripcion.toLowerCase()))
                         productosBuscados.add(producto);
                 }            
             }
@@ -254,8 +256,11 @@ public class GestorProductos implements IGestorProductos {
     public List<Producto> verProductosPorCategoria(Categoria categoria) {
         List<Producto> productosBuscados = new ArrayList<>();
         for(Producto p : this.productos) {
-            if (p.verCategoria().equals(categoria))
+            if (p.verCategoria().equals(categoria) && !p.verDescripcion().isEmpty())
                 productosBuscados.add(p);
+            //se agrega la condición !p.verDescripcion().isEmpty()
+            //porque hay 3 "productos" con descripción en blanco
+            //a esos productos se los usa para mostrar el menú de forma "más amigable"
         }
         Comparator<Producto> cmp = (p1, p2) -> p1.verDescripcion().compareTo(p2.verDescripcion());
         Collections.sort(productosBuscados, cmp);

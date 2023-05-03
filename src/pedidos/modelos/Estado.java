@@ -13,8 +13,7 @@ import java.util.Map;
  * @author root
  */
 public enum Estado {
-    CREANDO("Creando"), //para mí es o Creando o Solicitando, no los 2
-    SOLICITADO("Solicitando"),
+    CREADO("Creado"), 
     PROCESANDO("Procesando"),
     ENTREGADO("Entregado");
     

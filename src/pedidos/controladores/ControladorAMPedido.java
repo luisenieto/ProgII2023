@@ -38,17 +38,19 @@ public class ControladorAMPedido implements IControladorAMPedido {
     private VentanaAMPedido ventana;
     private IGestorUsuarios gu = GestorUsuarios.instanciar();
     private Usuario usuarioLogueado = gu.verUsuarioLogueado();
-//    private List<ProductoDelPedido> pdp = new ArrayList<>();
+    private List<ProductoDelPedido> productosDelPedido = new ArrayList<>();
+    //se tiene que definir esta lista porque cuando se está creando un pedido, el mismo todavía no existe
+    //y en alguna parte se tienen que ir guardando los productos
     private Pedido amPedido;
     //pedido que se quiere crear/modificar
     private int filaSeleccionada = -1;
     
     public ControladorAMPedido(Dialog ventanaPadre, Pedido amPedido) {
         this.ventana = new VentanaAMPedido(this, ventanaPadre);        
+        this.amPedido = amPedido;
         this.ventana.setLocationRelativeTo(null);                
         this.ventana.setTitle(this.generarTituloVentana());                
-        this.amPedido = amPedido;
-
+        
         if (this.amPedido == null) { //nuevo pedido
             IGestorPedidos gp = GestorPedidos.instanciar();
             this.ventana.verNumero().setText(Integer.toString(gp.verPedidos(this.usuarioLogueado).size() + 1));            
@@ -64,11 +66,8 @@ public class ControladorAMPedido implements IControladorAMPedido {
             this.ventana.verNumero().setText(Integer.toString(this.amPedido.verNumero()));            
             this.ventana.verFecha().setText(ManejoFechasYHoras.transformarLocalDateEnCadena(this.amPedido.verFecha()));
             this.ventana.verHora().setText(ManejoFechasYHoras.transformarLocalTimeEnCadena(this.amPedido.verHora()));            
+            this.productosDelPedido = this.amPedido.verProductosDelPedido();
         }
-        
-        this.ventana.verNumero().setEnabled(false);
-        this.ventana.verFecha().setEnabled(false);
-        this.ventana.verHora().setEnabled(false);
         
 //        this.configurarTabla();
         this.ventana.setVisible(true);  
@@ -78,8 +77,11 @@ public class ControladorAMPedido implements IControladorAMPedido {
      * Genera el título que se muestra en la ventana
      * @return String  - título que se muestra en la ventana
     */
-    private String generarTituloVentana() {  
-        return TITULO_NUEVO + " - " + this.usuarioLogueado.verApellido() + ", " + this.usuarioLogueado.verNombre();
+    private String generarTituloVentana() { 
+        if (this.amPedido == null) //alta
+            return TITULO_NUEVO + " - " + this.usuarioLogueado.verApellido() + ", " + this.usuarioLogueado.verNombre();
+        else //modificación
+            return TITULO_MODIFICAR + " - " + this.usuarioLogueado.verApellido() + ", " + this.usuarioLogueado.verNombre();
     }
     
     
@@ -113,8 +115,8 @@ public class ControladorAMPedido implements IControladorAMPedido {
     }
 
     @Override
-    public void btnAgregarClic(ActionEvent evt) {        
-//        IControladorAMProductoDelPedido controlador = new ControladorAMProductoDelPedido(this.ventana, this.pdp, null);
+    public void btnAgregarClic(ActionEvent evt) {             
+        IControladorAMProductoDelPedido controlador = new ControladorAMProductoDelPedido(this.ventana, this.productosDelPedido, null);
     }
 
     @Override
@@ -124,29 +126,28 @@ public class ControladorAMPedido implements IControladorAMPedido {
         if (this.filaSeleccionada != -1) {
             ModeloTablaProductosDelPedido mtpdp = (ModeloTablaProductosDelPedido)tablaProductosDelPedido.getModel();
             ProductoDelPedido productoDelPedidoSeleccionado = mtpdp.verProductoDelPedido(this.filaSeleccionada);
-//            IControladorAMProductoDelPedido controlador = new ControladorAMProductoDelPedido(this.ventana, this.pdp, productoDelPedidoSeleccionado);
+            IControladorAMProductoDelPedido controlador = new ControladorAMProductoDelPedido(this.ventana, this.productosDelPedido, productoDelPedidoSeleccionado);
         }
     }
 
     @Override
     public void btnQuitarClic(ActionEvent evt) {
-//        JTable tablaProductosDelPedido = this.ventana.verProductosDelPedido();
-//        this.filaSeleccionada = tablaProductosDelPedido.getSelectedRow();
-//        if (this.filaSeleccionada != -1) {
-//            ModeloTablaProductosDelPedido mtpdp = (ModeloTablaProductosDelPedido)tablaProductosDelPedido.getModel();
-//            ProductoDelPedido productoDelPedidoSeleccionado = mtpdp.verProductoDelPedido(this.filaSeleccionada);
-//            this.pdp.remove(productoDelPedidoSeleccionado);
-//            mtpdp = new ModeloTablaProductosDelPedido(this.pdp);
-//            tablaProductosDelPedido.setModel(mtpdp);
-//            this.filaSeleccionada = -1;
-//            this.ventana.verQuitar().setEnabled(this.filaSeleccionada != -1 && !this.pdp.isEmpty());
-//            this.ventana.verModificar().setEnabled(this.filaSeleccionada != -1 && !this.pdp.isEmpty());
-//        }
+        JTable tablaProductosDelPedido = this.ventana.verProductosDelPedido();
+        this.filaSeleccionada = tablaProductosDelPedido.getSelectedRow();
+        if (this.filaSeleccionada != -1) {
+            ModeloTablaProductosDelPedido mtpdp = (ModeloTablaProductosDelPedido)tablaProductosDelPedido.getModel();
+            ProductoDelPedido productoDelPedidoSeleccionado = mtpdp.verProductoDelPedido(this.filaSeleccionada);
+            this.productosDelPedido.remove(productoDelPedidoSeleccionado);
+            mtpdp = new ModeloTablaProductosDelPedido(this.productosDelPedido);
+            tablaProductosDelPedido.setModel(mtpdp);
+            this.filaSeleccionada = -1;
+            this.ventana.verQuitar().setEnabled(this.filaSeleccionada != -1 && !this.productosDelPedido.isEmpty());
+            this.ventana.verModificar().setEnabled(this.filaSeleccionada != -1 && !this.productosDelPedido.isEmpty());
+        }
     }
 
     @Override
-    public void btnGuardarClic(ActionEvent evt) {
-/*        
+    public void btnGuardarClic(ActionEvent evt) {        
         String fechaEnCadena = this.ventana.verFecha().getText();
         LocalDate fecha = ManejoFechasYHoras.transformarCadenaALocalDate(fechaEnCadena);
         
@@ -154,17 +155,21 @@ public class ControladorAMPedido implements IControladorAMPedido {
         LocalTime hora = ManejoFechasYHoras.transformarCadenaALocalTime(horaEnCadena);
         
         IGestorPedidos gp = GestorPedidos.instanciar();
-//        if (this. == null) { //creación            
-            String resultado = gp.crearPedido(this.usuarioLogueado, fecha, hora, this.pdp, (Cliente)this.usuarioLogueado);
+        String resultado;
+        if (this.amPedido == null) { //creación            
+            resultado = gp.crearPedido(this.usuarioLogueado, fecha, hora, this.productosDelPedido, (Cliente)this.usuarioLogueado);
             if (!resultado.equals(IGestorPedidos.EXITO))
                 JOptionPane.showMessageDialog(null, resultado, TITULO_NUEVO, JOptionPane.ERROR_MESSAGE);
             else
                 this.ventana.dispose(); 
-//        }
-//        else { //modificación
-//            //
-//        }
-*/
+        }
+        else { //modificación
+            resultado = gp.modificarPedido(this.usuarioLogueado, this.amPedido, productosDelPedido);
+            if (!resultado.equals(IGestorPedidos.EXITO))
+                JOptionPane.showMessageDialog(null, resultado, TITULO_NUEVO, JOptionPane.ERROR_MESSAGE);
+            else
+                this.ventana.dispose();
+        }
     }
 
     @Override
@@ -174,7 +179,12 @@ public class ControladorAMPedido implements IControladorAMPedido {
 
     @Override
     public void ventanaObtenerFoco(WindowEvent evt) {
-        ModeloTablaProductosDelPedido mtpdp = new ModeloTablaProductosDelPedido(this.amPedido);
+        ModeloTablaProductosDelPedido mtpdp;
+        if (this.amPedido == null) //se está creando un pedido
+            mtpdp = new ModeloTablaProductosDelPedido(this.productosDelPedido);
+        else
+            mtpdp = new ModeloTablaProductosDelPedido(this.amPedido);
+        
         JTable tablaProductosDelPedido = this.ventana.verProductosDelPedido();
         tablaProductosDelPedido.setModel(mtpdp);        
     }

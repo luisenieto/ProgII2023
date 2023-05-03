@@ -282,7 +282,19 @@ public class GestorUsuarios implements IGestorUsuarios {
 
     @Override
     public List<Usuario> buscarUsuarios(Usuario usuarioLogueado, String apellido) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Usuario> usuariosBuscados = new ArrayList<>();
+        IGestorPermisos gp = GestorPermisos.instanciar();
+        if (gp.buscarUsuarios(usuarioLogueado)) {
+            if (apellido != null) { 
+                for(Usuario usuario : this.usuarios) {
+                    if (usuario.verApellido().toLowerCase().contains(apellido.toLowerCase()))
+                        usuariosBuscados.add(usuario);
+                }                
+            }
+            return usuariosBuscados;
+        }
+        else 
+            return usuariosBuscados;
     }
 
     @Override

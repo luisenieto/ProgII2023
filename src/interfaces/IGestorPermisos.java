@@ -129,6 +129,13 @@ public interface IGestorPermisos {
     boolean modificarPedidos(Usuario usuarioLogueado);
     
     /**
+     * Determina si el usuario logueado puede cambiar el estado de los pedidos, según su perfil
+     * @param usuarioLogueado usuario sobre el cual se quiere determinar el permiso
+     * @return boolean  - true/false según el usuario pueda o no cambiar el estado de los pedidos
+    */        
+    boolean cambiarEstadoPedidos(Usuario usuarioLogueado);
+    
+    /**
      * Determina si el usuario logueado puede borrar pedidos, según su perfil
      * @param usuarioLogueado usuario sobre el cual se quiere determinar el permiso
      * @return boolean  - true/false según el usuario pueda o no borrar pedidos

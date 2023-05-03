@@ -20,7 +20,8 @@ public class ModeloTablaProductosDelPedido extends AbstractTableModel {
     //constantes para los nombres de las columnas
     
     private List<ProductoDelPedido> productosDelPedido = new ArrayList<>();
-    //los datos los saca del pedido
+    //los datos los saca del pedido (en caso que ya exista un pedido)
+    //o del vector de pedidos del producto (en caso que no exista el pedido)
     
     private List<String> nombresColumnas = Arrays.asList(new String[] {COLUMNA_PRODUCTO, COLUMNA_CANTIDAD});       
     //colección para guardar los nombres de las columnas
@@ -31,19 +32,17 @@ public class ModeloTablaProductosDelPedido extends AbstractTableModel {
     */                                                        
     public ModeloTablaProductosDelPedido(Pedido pedido) {
         if (pedido != null)
-            this.productosDelPedido = pedido.verProductosDelPedido();
-        else 
-            this.productosDelPedido = new ArrayList<>(); //lista vacía
-        
+            this.productosDelPedido = pedido.verProductosDelPedido();                
     }
-    
+        
     /**
     * Constructor
     * @param productosDelPedido productos del pedido
     */                                                        
-//    public ModeloTablaProductosDelPedido(List<ProductoDelPedido> productosDelPedido) {
-//        this.productosDelPedido = productosDelPedido;
-//    }
+    public ModeloTablaProductosDelPedido(List<ProductoDelPedido> productosDelPedido) {
+        if (productosDelPedido != null)
+            this.productosDelPedido = productosDelPedido;
+    }
     
     /**
     * Obtiene el valor de la celda especificada

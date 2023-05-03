@@ -50,7 +50,9 @@ public class ControladorProductos implements IControladorProductos {
         this.ventana.verDescripcion().setEnabled(this.gp.menu(this.usuarioLogueado));
         this.ventana.verBuscar().setEnabled(this.gp.menu(this.usuarioLogueado));
         
-        this.ventana.setTitle(this.generarTituloVentana());        
+        this.ventana.setTitle(this.generarTituloVentana());    
+        
+        this.ventana.verBuscar().setEnabled(false);
         this.ventana.setVisible(true);
     }
     
@@ -162,53 +164,41 @@ public class ControladorProductos implements IControladorProductos {
 
     @Override
     public void txtDescripcionPresionarTecla(KeyEvent evt) {    
-        String descripcion = this.ventana.verDescripcion().getText().trim();
-        System.out.println(descripcion);
-//        char c = evt.getKeyChar();        
-//        if (Character.isLetter(c) || Character.isDigit(c)) {
-//            String cadenaBusqueda = Character.toString(c);
-//            this.buscar(cadenaBusqueda);
-//        }
-            
-            
-//        System.out.print("txtDescripcionPresionarTecla: ");
-//        System.out.println(c);
-//        if (c == KeyEvent.VK_ENTER ||
-//            c == KeyEvent.VK_BACK_SPACE ||
-//            c == KeyEvent.VK_DELETE ||    
-//            Character.isLetter(c) ||
-//            Character.isDigit(c)) 
-//                this.buscar();
-//                this.btnBuscarClic(null);
+        //Diferencia entre keyPressed, keyTyped y keyReleased:
+            //https://math.hws.edu/eck/cs124/javanotes3/c6/s5.html#:~:text=The%20keyPressed%20method%20is%20called,the%20user%20types%20a%20character
+        char caracter = evt.getKeyChar();
+        if (Character.isLetter(caracter) || Character.isDigit(caracter))
+            this.buscar(this.ventana.verDescripcion().getText().trim());        
+        else {
+            int codigoTecla = evt.getKeyCode();
+            if (codigoTecla == KeyEvent.VK_BACK_SPACE || codigoTecla == KeyEvent.VK_DELETE)
+                this.buscar(this.ventana.verDescripcion().getText().trim());        
+        }
     }
 
     @Override
+    public void txtDescripcionPresionarEnter(ActionEvent evt) {
+        //Detección de Enter en JTextField
+            //https://stackoverflow.com/questions/4419667/detect-enter-press-in-jtextfield        
+//        this.buscar(this.ventana.verDescripcion().getText().trim()); 
+    }
+    
+    
+
+    @Override
     public void btnBuscarClic(ActionEvent evt) {
-//        this.buscar();
-//        System.out.print("btnBuscarClic: ");
-//        ModeloTablaProductos mtp;
-//        
-//        String descripcion = this.ventana.verDescripcion().getText(); //.trim();
-//        System.out.println(descripcion);
-//        if (descripcion.isEmpty())
-//            mtp = new ModeloTablaProductos();
-//        else
-//            mtp = new ModeloTablaProductos(descripcion);
-//        this.configurarTabla(mtp);
+//        this.buscar(this.ventana.verDescripcion().getText().trim()); 
     }
     
     private void buscar(String cadenaBusqueda) {
-        //System.out.print("buscar: ");
         ModeloTablaProductos mtp;
+        JTable tablaProductos = this.ventana.verProductos();
         
-        //String descripcion = this.ventana.verDescripcion().getText().trim();
-        //System.out.println(descripcion);
         if (cadenaBusqueda.isEmpty())
             mtp = new ModeloTablaProductos(this.usuarioLogueado);
         else
             mtp = new ModeloTablaProductos(this.usuarioLogueado, cadenaBusqueda);
-//        this.configurarTabla(mtp);
-        
+        tablaProductos.setModel(mtp);        
     }
     
     

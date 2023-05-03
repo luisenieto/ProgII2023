@@ -31,7 +31,7 @@ public class Pedido {
      * @param cliente cliente del pedido
     */    
     public Pedido(int numero, LocalDateTime fechaYHora, List<ProductoDelPedido> productosDelPedido, Cliente cliente) {
-        this(numero, fechaYHora, productosDelPedido, Estado.CREANDO, cliente);
+        this(numero, fechaYHora, productosDelPedido, Estado.CREADO, cliente);
     }
     
     /**
@@ -96,6 +96,31 @@ public class Pedido {
 
     public void asignarEstado(Estado estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + this.numero;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Pedido other = (Pedido) obj;
+        if (this.numero != other.numero) {
+            return false;
+        }
+        return true;
     }
     
     

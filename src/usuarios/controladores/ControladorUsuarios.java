@@ -161,29 +161,39 @@ public class ControladorUsuarios implements IControladorUsuarios {
 
     @Override
     public void txtApellidoPresionarTecla(KeyEvent evt) {
-        char c = evt.getKeyChar();
-        System.out.print("txtApellidoPresionarTecla: ");
-        System.out.println(c);
-//        if (c == KeyEvent.VK_ENTER || 
-//            c == KeyEvent.VK_BACK_SPACE ||
-//            c == KeyEvent.VK_DELETE ||    
-//            Character.isLetter(c))
-                this.btnBuscarClic(null);
+        //Diferencia entre keyPressed, keyTyped y keyReleased:
+            //https://math.hws.edu/eck/cs124/javanotes3/c6/s5.html#:~:text=The%20keyPressed%20method%20is%20called,the%20user%20types%20a%20character
+        char caracter = evt.getKeyChar();
+        if (Character.isLetter(caracter) || Character.isDigit(caracter))
+            this.buscar(this.ventana.verApellido().getText().trim());
+        else {
+            int codigoTecla = evt.getKeyCode();
+            if (codigoTecla == KeyEvent.VK_BACK_SPACE || codigoTecla == KeyEvent.VK_DELETE)
+                this.buscar(this.ventana.verApellido().getText().trim());
+        }
     }
 
     @Override
-    public void btnBuscarClic(ActionEvent evt) {
-        ModeloTablaUsuarios mtu;
-        
-        String apellido = this.ventana.verApellido().getText().trim();
-        if (apellido.isEmpty())
-            mtu = new ModeloTablaUsuarios(this.usuarioLogueado);
-        else
-            mtu = new ModeloTablaUsuarios(this.usuarioLogueado, apellido);
-        
-        JTable tablaUsuarios = this.ventana.verUsuarios(); 
-        tablaUsuarios.setModel(mtu);
+    public void txtApellidoPresionarEnter(ActionEvent evt) {
+        //Detección de Enter en JTextField
+            //https://stackoverflow.com/questions/4419667/detect-enter-press-in-jtextfield        
+        this.buscar(this.ventana.verApellido().getText().trim());
     }
     
     
+
+    @Override
+    public void btnBuscarClic(ActionEvent evt) {
+        this.buscar(this.ventana.verApellido().getText().trim());
+    }
+    
+    private void buscar(String cadenaBusqueda) {
+        ModeloTablaUsuarios mtu;
+        JTable tablaUsuarios = this.ventana.verUsuarios(); 
+        if (cadenaBusqueda.isEmpty())
+            mtu = new ModeloTablaUsuarios(this.usuarioLogueado);
+        else
+            mtu = new ModeloTablaUsuarios(this.usuarioLogueado, cadenaBusqueda);
+        tablaUsuarios.setModel(mtu);
+    }
 }

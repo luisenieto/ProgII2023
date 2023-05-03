@@ -103,6 +103,7 @@ public class VentanaAMPedido extends JDialog {
         jLabel1.setText("Fecha:");
 
         txtFecha.setToolTipText("Apellidos del profesor");
+        txtFecha.setEnabled(false);
         txtFecha.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtFechaPresionarTecla(evt);
@@ -130,6 +131,7 @@ public class VentanaAMPedido extends JDialog {
         jLabel4.setText("Número:");
 
         txtNumero.setToolTipText("Documento del profesor");
+        txtNumero.setEnabled(false);
         txtNumero.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtNumeroPresionarTecla(evt);
@@ -137,6 +139,8 @@ public class VentanaAMPedido extends JDialog {
         });
 
         jLabel5.setText("Hora:");
+
+        txtHora.setEnabled(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Productos"));
 
@@ -163,7 +167,6 @@ public class VentanaAMPedido extends JDialog {
 
         btnQuitar.setMnemonic('Q');
         btnQuitar.setText("Quitar");
-        btnQuitar.setEnabled(false);
         btnQuitar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnQuitarClic(evt);
@@ -172,7 +175,6 @@ public class VentanaAMPedido extends JDialog {
 
         btnModificar.setMnemonic('M');
         btnModificar.setText("Modificar");
-        btnModificar.setEnabled(false);
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarClic(evt);
@@ -203,10 +205,10 @@ public class VentanaAMPedido extends JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnQuitar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnModificar)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModificar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnQuitar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

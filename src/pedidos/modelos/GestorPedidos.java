@@ -114,8 +114,61 @@ public class GestorPedidos implements IGestorPedidos {
     }
 
     @Override
-    public String modificarPedido(Usuario usuarioLogueado, Pedido pedidoAModificar, LocalDate fecha, LocalTime hora, List<ProductoDelPedido> productosDelPedido, Cliente cliente) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String modificarPedido(Usuario usuarioLogueado, Pedido pedidoAModificar, List<ProductoDelPedido> productosDelPedido) {
+        IGestorPermisos gp = GestorPermisos.instanciar();
+        if (!gp.modificarPedidos(usuarioLogueado))
+            return ERROR_PERMISOS;
+        
+        if (!this.existeEstePedido(pedidoAModificar))
+            return PEDIDO_INEXISTENTE;
+        
+        if (!this.validarProductosDelPedido(productosDelPedido))
+            return ERROR_PRODUCTOS_DEL_PEDIDO;
+        
+        Cliente cliente = pedidoAModificar.verCliente();
+        pedidoAModificar.asignarProductosDelPedido(productosDelPedido);
+        int posicion = this.pedidos.indexOf(pedidoAModificar);
+        this.pedidos.set(posicion, pedidoAModificar);
+        String resultado = this.escribirArchivo();
+        if (resultado.equals(ESCRITURA_OK)) {
+            cliente.agregarPedido(pedidoAModificar);
+            return EXITO;
+        }
+        else
+            return resultado;
+        
+    }
+
+    @Override
+    public String cambiarEstado(Usuario usuarioLogueado, Pedido pedidoAModificar) {
+        if (!this.existeEstePedido(pedidoAModificar))
+            return PEDIDO_INEXISTENTE;
+        
+        IGestorPermisos gp = GestorPermisos.instanciar();
+        if (!gp.cambiarEstadoPedidos(usuarioLogueado))
+            return ERROR_PERMISOS;
+        
+        int posicion = this.pedidos.indexOf(pedidoAModificar);
+        
+        Estado estado = pedidoAModificar.verEstado();
+        if (estado == Estado.CREADO)
+            pedidoAModificar.asignarEstado(Estado.PROCESANDO);
+        else if (estado == Estado.PROCESANDO)
+            pedidoAModificar.asignarEstado(Estado.ENTREGADO);
+        Cliente cliente = pedidoAModificar.verCliente();
+        this.pedidos.set(posicion, pedidoAModificar);
+        String resultado = this.escribirArchivo();
+        if (resultado.equals(ESCRITURA_OK)) {
+            cliente.agregarPedido(pedidoAModificar);
+            return EXITO;
+        }
+        else
+            return resultado;
+    }
+
+    @Override
+    public boolean existeEstePedido(Pedido pedido) {
+        return this.pedidos.contains(pedido); 
     }
     
     
@@ -136,17 +189,17 @@ public class GestorPedidos implements IGestorPedidos {
         return VALIDACION_EXITO;
     }
     
-    private String validarPedido(LocalDate fecha, LocalTime hora, List<ProductoDelPedido> productosDelPedido, Estado estado, Cliente cliente) {
-        String resultadoValidacion = this.validarPedido(fecha, hora, productosDelPedido, cliente);
-        if (resultadoValidacion.equals(VALIDACION_EXITO)) {
-            if (!this.validarEstado(estado))
-                return ERROR_ESTADO;
-            
-            return VALIDACION_EXITO;
-        }
-        else
-            return resultadoValidacion;
-    }
+//    private String validarPedido(LocalDate fecha, LocalTime hora, List<ProductoDelPedido> productosDelPedido, Estado estado, Cliente cliente) {
+//        String resultadoValidacion = this.validarPedido(fecha, hora, productosDelPedido, cliente);
+//        if (resultadoValidacion.equals(VALIDACION_EXITO)) {
+//            if (!this.validarEstado(estado))
+//                return ERROR_ESTADO;
+//            
+//            return VALIDACION_EXITO;
+//        }
+//        else
+//            return resultadoValidacion;
+//    }
 
     @Override
     public String cancelarPedido(Usuario usuarioLogueado, Pedido pedido) {
@@ -154,7 +207,7 @@ public class GestorPedidos implements IGestorPedidos {
         if (!gp.cancelarPedidos(usuarioLogueado))
             return ERROR_PERMISOS;
         
-        if (pedido.verEstado() == Estado.CREANDO) {
+        if (pedido.verEstado() == Estado.CREADO) {
             Cliente cliente = pedido.verCliente();
             if (usuarioLogueado.verPerfil() == Perfil.CLIENTE) { //el cliente sólo puede cancelar un pedido propio                
                 if (usuarioLogueado.equals(cliente)) { //el usuario logueado quiere cancelar un pedido propio                    

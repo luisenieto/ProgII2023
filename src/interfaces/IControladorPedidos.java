@@ -36,6 +36,12 @@ public interface IControladorPedidos {
     public void btnCancelarClic(ActionEvent evt);
     
     /**
+     * Acción a ejecutar cuando se selecciona el ítem del menú de popup
+     * @param evt evento
+    */                        
+    public void itemMenuClic(ActionEvent evt);
+    
+    /**
      * Acción a ejecutar cuando la ventana obtenga el foco
      * @param evt evento
     */
@@ -51,11 +57,11 @@ public interface IControladorPedidos {
      * Acción a ejecutar cuando se presiona una tecla en el campo txtDescripcion
      * @param evt evento
     */
-    public void txtDescripcionPresionarTecla(KeyEvent evt);
+//    public void txtDescripcionPresionarTecla(KeyEvent evt);
     
     /**
      * Acción a ejecutar cuando se selecciona el botón Buscar
      * @param evt evento
     */                        
-    public void btnBuscarClic(ActionEvent evt);    
+//    public void btnBuscarClic(ActionEvent evt);    
 }
