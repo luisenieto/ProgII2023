@@ -148,20 +148,20 @@ public class VentanaAMProducto extends JDialog {
     }//GEN-LAST:event_btnCancelarClic
 
     private void btnGuardarClic(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClic
-        int codigo = Integer.parseInt(this.txtCodigo.getText().trim());
-        String descripcion = this.txtDescripcion.getText().trim();
-        float precio = Float.parseFloat(this.txtPrecio.getText().trim());
-        String categoria = this.txtCategoria.getText().trim();
-        String estado  = this.txtEstado.getText().trim();
-        Producto unProducto = new Producto(codigo, descripcion, categoria, estado, precio);
-        this.productos.add(unProducto);
-        
-        System.out.println("Productos");
-        System.out.println("=========");
-        for(Producto p : this.productos) {
-            p.mostrar();
-            System.out.println();
-        }
+//        int codigo = Integer.parseInt(this.txtCodigo.getText().trim());
+//        String descripcion = this.txtDescripcion.getText().trim();
+//        float precio = Float.parseFloat(this.txtPrecio.getText().trim());
+//        String categoria = this.txtCategoria.getText().trim();
+//        String estado  = this.txtEstado.getText().trim();
+//        Producto unProducto = new Producto(codigo, descripcion, categoria, estado, precio);
+//        this.productos.add(unProducto);
+//        
+//        System.out.println("Productos");
+//        System.out.println("=========");
+//        for(Producto p : this.productos) {
+//            p.mostrar();
+//            System.out.println();
+//        }
     }//GEN-LAST:event_btnGuardarClic
 
 

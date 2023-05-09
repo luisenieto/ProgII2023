@@ -12,11 +12,11 @@ package productos.modelos;
 public class Producto {
     private int codigo;
     private String descripcion;    
-    private String categoria;
-    private String estado;
+    private Categoria categoria;
+    private Estado estado;
     private float precio;
 
-    public Producto(int codigo, String descripcion, String categoria, String estado, float precio) {
+    public Producto(int codigo, String descripcion, Categoria categoria, Estado estado, float precio) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.categoria = categoria;
@@ -57,19 +57,19 @@ public class Producto {
         this.precio = precio;
     }
 
-    public String verCategoria() {
+    public Categoria verCategoria() {
         return categoria;
     }
 
-    public void asignarCategoria(String categoria) {
+    public void asignarCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
-    public String verEstado() {
+    public Estado verEstado() {
         return estado;
     }
 
-    public void asignarEstado(String estado) {
+    public void asignarEstado(Estado estado) {
         this.estado = estado;
     }
 
