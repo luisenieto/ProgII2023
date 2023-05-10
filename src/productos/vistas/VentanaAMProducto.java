@@ -7,7 +7,13 @@ package productos.vistas;
 
 import java.awt.Dialog;
 import java.util.ArrayList;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JTextField;
+import productos.modelos.Categoria;
+import productos.modelos.Estado;
+import productos.modelos.ModeloComboCategorias;
+import productos.modelos.ModeloComboEstados;
 import productos.modelos.Producto;
 
 public class VentanaAMProducto extends JDialog {
@@ -19,9 +25,68 @@ public class VentanaAMProducto extends JDialog {
      */
     public VentanaAMProducto(Dialog ventanaPadre) {
         super(ventanaPadre, true);
-        initComponents();
+        initComponents(); 
+        this.configurarComboCategorias();
+        this.configurarComboEstados();
     }
     
+    /**
+     * Configura el combo de categorias
+     */
+    private void configurarComboCategorias() {
+        ModeloComboCategorias mcc = new ModeloComboCategorias();
+        this.comboCategoria.setModel(mcc);
+        
+    }
+    
+    /**
+     * Configura el combo de estados
+     */
+    private void configurarComboEstados() {
+        ModeloComboEstados mce = new ModeloComboEstados();
+        this.comboEstado.setModel(mce);
+        
+    }
+    /**
+     * Devuelve el campo txtCodigo
+     * @return JTextField  - campo txtCodigo
+     */
+    public JTextField verCodigo() {
+        return this.txtCodigo;
+    } 
+
+    /**
+     * Devuelve el campo txtDescripcion
+     * @return String  - campo txtDescripcion
+     */    
+    public JTextField verDescripcion() {
+        return this.txtDescripcion;
+    }
+    
+    /**
+     * Devuelve el campo txtPrecio
+     * @return JTextField  - campo txtPrecio
+     */
+    public JTextField verPrecio() {
+        return this.txtPrecio;
+    }
+       
+    /**
+     * Devuelve el combo de categorías
+     * @return JComboBox  - combo de categorías
+     */    
+    public JComboBox verCategoria() {
+        return this.comboCategoria;
+    }
+    
+    /**
+     * Devuelve el combo de estados
+     * @return JComboBox  - combo de estados
+     */    
+    public JComboBox verEstado() {
+        return this.comboEstado;
+    }
+     
       
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,8 +107,8 @@ public class VentanaAMProducto extends JDialog {
         txtCodigo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtCategoria = new javax.swing.JTextField();
-        txtEstado = new javax.swing.JTextField();
+        comboCategoria = new javax.swing.JComboBox<>();
+        comboEstado = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -82,6 +147,10 @@ public class VentanaAMProducto extends JDialog {
 
         jLabel3.setText("Categoría");
 
+        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        comboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,8 +175,8 @@ public class VentanaAMProducto extends JDialog {
                             .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
                             .addComponent(txtCodigo)
                             .addComponent(txtDescripcion)
-                            .addComponent(txtCategoria)
-                            .addComponent(txtEstado))))
+                            .addComponent(comboCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -128,16 +197,16 @@ public class VentanaAMProducto extends JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
+                    .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60)
+                    .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnGuardar))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -148,35 +217,36 @@ public class VentanaAMProducto extends JDialog {
     }//GEN-LAST:event_btnCancelarClic
 
     private void btnGuardarClic(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClic
-//        int codigo = Integer.parseInt(this.txtCodigo.getText().trim());
-//        String descripcion = this.txtDescripcion.getText().trim();
-//        float precio = Float.parseFloat(this.txtPrecio.getText().trim());
-//        String categoria = this.txtCategoria.getText().trim();
-//        String estado  = this.txtEstado.getText().trim();
-//        Producto unProducto = new Producto(codigo, descripcion, categoria, estado, precio);
-//        this.productos.add(unProducto);
-//        
-//        System.out.println("Productos");
-//        System.out.println("=========");
-//        for(Producto p : this.productos) {
-//            p.mostrar();
-//            System.out.println();
-//        }
+        int codigo = Integer.parseInt(this.txtCodigo.getText().trim());
+        String descripcion = this.txtDescripcion.getText().trim();
+        float precio = Float.parseFloat(this.txtPrecio.getText().trim());
+        Categoria categoria = ((ModeloComboCategorias)this.comboCategoria.getModel()).obtenerCategoria();
+        Estado estado = ((ModeloComboEstados)this.comboEstado.getModel()).obtenerEstado();
+        Producto unProducto = new Producto(codigo, descripcion, categoria, estado, precio);
+        if (!this.productos.contains(unProducto))
+            this.productos.add(unProducto);
+        
+        System.out.println("Productos");
+        System.out.println("=========");
+        for(Producto p : this.productos) {
+            p.mostrar();
+            System.out.println();
+        }
     }//GEN-LAST:event_btnGuardarClic
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<String> comboCategoria;
+    private javax.swing.JComboBox<String> comboEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField txtCategoria;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtEstado;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }

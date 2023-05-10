@@ -12,57 +12,38 @@ import pedidos.modelos.Pedido;
  *
  * @author root
  */
-public class Cliente {
-    private String correo;
-    private String clave;
-    private String apellido;
-    private String nombre; 
+public class Cliente extends Usuario {
     private ArrayList<Pedido> pedidos = new ArrayList<>();
 
     public Cliente(String correo, String clave, String apellido, String nombre) {
-        this.correo = correo;
-        this.clave = clave;
-        this.apellido = apellido;
-        this.nombre = nombre;
+        super(correo, clave, apellido, nombre);
+    }   
+    
+    /**
+     * Agrega el pedido al conjunto de pedidos del cliente
+     * Si el pedido no está, lo agrega, y si está lo reemplaza
+     * @param pedido pedido a agregar
+    */
+    public void agregarPedido(Pedido pedido) {
+        if (pedido != null) {
+            if (!this.pedidos.contains(pedido)) //no está el pedido
+                this.pedidos.add(pedido);
+            else { //ya está el pedido
+                int posicion = this.pedidos.indexOf(pedido);
+                this.pedidos.set(posicion, pedido);
+            }
+        }
     }
     
+    public void cancelarPedido(Pedido pedido) {
+        if (pedido != null && this.pedidos.contains(pedido))
+            this.pedidos.remove(pedido);
+    }
+
+    @Override
+    public ArrayList<Pedido> verPedidos() {
+        return this.pedidos;
+    }
     
-    public void mostrar() {
-        System.out.println(correo);
-        System.out.println(apellido);
-        System.out.println(nombre);
-    }
-
-    public String verCorreo() {
-        return correo;
-    }
-
-    public void asignarCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String verClave() {
-        return clave;
-    }
-
-    public void asignarClave(String clave) {
-        this.clave = clave;
-    }
-
-    public String verApellido() {
-        return apellido;
-    }
-
-    public void asignarApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String verNombre() {
-        return nombre;
-    }
-
-    public void asignarNombre(String nombre) {
-        this.nombre = nombre;
-    }
     
 }

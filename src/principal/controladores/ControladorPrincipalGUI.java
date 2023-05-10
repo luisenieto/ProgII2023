@@ -19,7 +19,7 @@ public class ControladorPrincipalGUI {
     public static void main(String[] args) {
         establecerLookAndFeel("Nimbus"); 
         //asigna el look and feel "Nimbus" a la ventana
-/*        
+        
         //Se crea la ventana
         VentanaAMProducto ventana = new VentanaAMProducto(null);
         
@@ -31,7 +31,7 @@ public class ControladorPrincipalGUI {
         
         //Se hace visible la ventana
         ventana.setVisible(true);
-*/        
+        
 
 /*
         //Se crea la ventana
@@ -61,6 +61,7 @@ public class ControladorPrincipalGUI {
         ventana.setVisible(true);
 */
 
+/*
         //Se crea la ventana
         VentanaAMEncargado ventana = new VentanaAMEncargado(null);
         
@@ -72,6 +73,7 @@ public class ControladorPrincipalGUI {
         
         //Se hace visible la ventana
         ventana.setVisible(true);
+*/
     }
     
     /**
