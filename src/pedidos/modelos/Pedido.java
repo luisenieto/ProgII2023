@@ -46,6 +46,7 @@ public class Pedido {
     public Pedido(int numero, LocalDateTime fechaYHora, ArrayList<ProductoDelPedido> productosDelPedido, Estado estado, Cliente cliente) {
         this.numero = numero;
         this.fechaYHora = fechaYHora;
+        this.productosDelPedido = productosDelPedido;
         this.cliente = cliente;
         this.estado = estado;
     }
@@ -94,10 +95,12 @@ public class Pedido {
         System.out.println("Número: " + this.numero);
         System.out.println("Fecha: " + this.fechaACadena(this.verFecha()));
         System.out.println("Hora: " + this.horaACadena(this.verHora()));
+        System.out.println("\tProducto \tCantidad");
+        System.out.println("\t======== \t========");
         for(ProductoDelPedido pdp : this.productosDelPedido) {
             Producto producto = pdp.verProducto();
             int cantidad = pdp.verCantidad();
-            System.out.println("\t\t" + producto + "\t\t" + cantidad);
+            System.out.println("\t" + producto + "\t" + cantidad);
         }
         System.out.println("Cliente: " + this.cliente.verApellido() + ", " + this.cliente.verNombre());
         System.out.println("Estado: " + this.estado);
