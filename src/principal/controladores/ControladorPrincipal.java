@@ -18,6 +18,7 @@ import interfaces.IGestorPedidos;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import pedidos.modelos.ProductoDelPedido;
 import pedidos.modelos.GestorPedidos;
 import pedidos.modelos.Pedido;
@@ -294,7 +295,7 @@ public class ControladorPrincipal  {
         }
         System.out.println();
         
-        ArrayList<Usuario> usuariosBuscados = gu.buscarUsuarios("ApellidoCliente");
+        List<Usuario> usuariosBuscados = gu.buscarUsuarios("ApellidoCliente");
         System.out.println("Usuarios filtrados");
         System.out.println("==================");
         for(Usuario u : usuariosBuscados) {
@@ -322,7 +323,7 @@ public class ControladorPrincipal  {
         }
         System.out.println();
         
-        ArrayList<Producto> productosBuscados = gp.verProductosPorCategoria(Categoria.POSTRE);
+        List<Producto> productosBuscados = gp.verProductosPorCategoria(Categoria.POSTRE);
         System.out.println("Productos filtrados");
         System.out.println("===================");
         for(Producto p : productosBuscados) {

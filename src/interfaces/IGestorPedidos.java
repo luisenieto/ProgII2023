@@ -7,12 +7,11 @@ package interfaces;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.List;
 import pedidos.modelos.Pedido;
 import pedidos.modelos.ProductoDelPedido;
 import productos.modelos.Producto;
 import usuarios.modelos.Cliente;
-import usuarios.modelos.Usuario;
 
 /**
  *
@@ -56,7 +55,7 @@ public interface IGestorPedidos {
      * @param cliente cliente del pedido
      * @return cadena con el resultado de la operación (EXITO || ESCRITURA_ERROR || PEDIDOS_DUPLICADOS || ERROR_FECHA || ERROR_HORA || ERROR_PRODUCTOS_DEL_PEDIDO || ERROR_CLIENTE)
     */                                                                    
-    public String crearPedido(LocalDate fecha, LocalTime hora, ArrayList<ProductoDelPedido> productosDelPedido, Cliente cliente);
+    public String crearPedido(LocalDate fecha, LocalTime hora, List<ProductoDelPedido> productosDelPedido, Cliente cliente);
     
     /**
      * Cambia el estado de un pedido
@@ -70,13 +69,12 @@ public interface IGestorPedidos {
     
     
     /**
-     * Devuelve todos los pedidos
+     * Devuelve todos los pedidos ordenados ascendentemente por número
      * Si el usuario logueado es Encargado o Empleado, devuelve todos los pedidos
      * Si el usuario logueado es Cliente, devuelve sólo los suyos
-     * Este método es necesario para las clases ....
-     * @return ArrayList<Pedido>  - lista de pedidos
+     * @return List<Pedido>  - lista de pedidos
     */                                                                           
-    public ArrayList<Pedido> verPedidos();  
+    public List<Pedido> verPedidos();  
     
     /**
      * Busca si existen pedidos con ....

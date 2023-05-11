@@ -8,6 +8,9 @@ package productos.modelos;
 import interfaces.IGestorPedidos;
 import interfaces.IGestorProductos;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import pedidos.modelos.GestorPedidos;
 
 /**
@@ -17,7 +20,7 @@ import pedidos.modelos.GestorPedidos;
 public class GestorProductos implements IGestorProductos {
     private static GestorProductos gestor;
     
-    private ArrayList<Producto> productos = new ArrayList<>();
+    private List<Producto> productos = new ArrayList<>();
     
     /**
      * Constructor
@@ -153,7 +156,14 @@ public class GestorProductos implements IGestorProductos {
     }
 
     @Override
-    public ArrayList<Producto> menu() {
+    public List<Producto> menu() {
+        Comparator<Producto> cmp = (p1, p2) -> {
+            if (p1.verCategoria() == p2.verCategoria())
+                return p1.verDescripcion().compareToIgnoreCase(p2.verDescripcion());
+            else
+                return p1.verCategoria().compareTo(p2.verCategoria());
+        };
+        Collections.sort(this.productos, cmp);
         return this.productos;
     }
 
@@ -166,6 +176,13 @@ public class GestorProductos implements IGestorProductos {
                     productosBuscados.add(producto);
             }            
         }
+        Comparator<Producto> cmp = (p1, p2) -> {
+            if (p1.verCategoria() == p2.verCategoria())
+                return p1.verDescripcion().compareToIgnoreCase(p2.verDescripcion());
+            else
+                return p1.verCategoria().compareTo(p2.verCategoria());
+        };
+        Collections.sort(productosBuscados, cmp);
         return productosBuscados;    
     }
 
@@ -190,12 +207,14 @@ public class GestorProductos implements IGestorProductos {
     }
 
     @Override
-    public ArrayList<Producto> verProductosPorCategoria(Categoria categoria) {
+    public List<Producto> verProductosPorCategoria(Categoria categoria) {
         ArrayList<Producto> productosBuscados = new ArrayList<>();
         for(Producto p : this.productos) {
             if (p.verCategoria().equals(categoria))
                 productosBuscados.add(p);
         }
+        Comparator<Producto> cmp = (p1, p2) -> p1.verDescripcion().compareToIgnoreCase(p2.verDescripcion());            
+        Collections.sort(productosBuscados, cmp);
         return productosBuscados;
     }
 

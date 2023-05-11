@@ -5,7 +5,7 @@
  */
 package interfaces;
 
-import java.util.ArrayList;
+import java.util.List;
 import productos.modelos.Categoria;
 import productos.modelos.Estado;
 import productos.modelos.Producto;
@@ -63,20 +63,21 @@ public interface IGestorProductos {
     public String modificarProducto(Producto productoAModificar, int codigo, String descripcion, float precio, Categoria categoria, Estado estado);
     
     /**
-     * Devuelve todos los productos 
+     * Devuelve todos los productos, ordenados por categoría y luego alfabéticamente por la descripción
      * Que se devuelvan todos los productos, o una lista vacía, depende de los permisos del usuario logueado
      * Este método es necesario para las clases ModeloTablaProductos
-     * @return ArrayList<Producto>  - lista de productos 
+     * @return List<Producto>  - lista de productos 
     */                                                                           
-    public ArrayList<Producto> menu();  
+    public List<Producto> menu();  
     
     /**
      * Busca si existen productos con la descripción especificada (total o parcialmente)
+     * Los productos que coincidan con la descripción se devuelven ordenados por categoría y luego alfabéticamente por la descripción
      * Este método es usado por la clase ModeloTablaProductos
      * @param descripcion descripción del producto a buscar
-     * @return ArrayList<Producto>  - lista de productos
+     * @return List<Producto>  - lista de productos
     */                                                                            
-    public ArrayList<Producto> buscarProductos(String descripcion); 
+    public List<Producto> buscarProductos(String descripcion); 
     
     /**
      * Borra un producto siempre y cuando no haya pedidos con el mismo
@@ -94,11 +95,12 @@ public interface IGestorProductos {
     
     /**
      * Devuelve los productos con la categoría especificada
+     * Los productos con la categoría especificada se devuelven ordenados alfabéticamente según la descripción
      * Si no hay productos con la categoría, devuelve una lista vacía
      * @param categoria categoría de los productos a buscar
-     * @return ArrayList<Producto>  - lista de productos con la categoría especificada
+     * @return List<Producto>  - lista de productos con la categoría especificada
     */                                                                            
-    public ArrayList<Producto> verProductosPorCategoria(Categoria categoria); 
+    public List<Producto> verProductosPorCategoria(Categoria categoria); 
     
     /**
      * Obtiene el producto con el código especificado

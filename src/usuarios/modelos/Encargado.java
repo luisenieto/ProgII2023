@@ -6,8 +6,7 @@
 package usuarios.modelos;
 
 import interfaces.IGestorPedidos;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 import pedidos.modelos.GestorPedidos;
 import pedidos.modelos.Pedido;
 
@@ -23,7 +22,7 @@ public class Encargado extends Usuario {
     }    
 
     @Override
-    public ArrayList<Pedido> verPedidos() {
+    public List<Pedido> verPedidos() {
         IGestorPedidos gp = GestorPedidos.instanciar();
         return gp.verPedidos();
     }

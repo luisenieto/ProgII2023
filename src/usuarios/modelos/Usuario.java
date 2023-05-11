@@ -5,7 +5,7 @@
  */
 package usuarios.modelos;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import pedidos.modelos.Pedido;
 
@@ -93,7 +93,7 @@ public abstract class Usuario {
      * Devuelve los pedidos del usuario
      * Si el usuario es encargado o empleado, devuelve los pedidos de todos los clientes
      * Si el usuario es cliente, sólo devuelve sus pedidos
-     * @return ArrayList<Pedido>  - lista de pedidos
+     * @return List<Pedido>  - lista de pedidos
     */
-    public abstract ArrayList<Pedido> verPedidos();
+    public abstract List<Pedido> verPedidos();
 }

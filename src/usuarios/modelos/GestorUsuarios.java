@@ -8,6 +8,9 @@ package usuarios.modelos;
 import interfaces.IGestorPedidos;
 import interfaces.IGestorUsuarios;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import pedidos.modelos.GestorPedidos;
 
 /**
@@ -148,7 +151,14 @@ public class GestorUsuarios implements IGestorUsuarios {
     }
 
     @Override
-    public ArrayList<Usuario> verUsuarios() {
+    public List<Usuario> verUsuarios() {
+        Comparator<Usuario> cmp = (u1, u2) -> {
+            if (u1.verApellido().compareToIgnoreCase(u2.verApellido()) == 0)
+                return u1.verNombre().compareToIgnoreCase(u2.verNombre());
+            else
+                return u1.verApellido().compareToIgnoreCase(u2.verApellido());
+        };
+        Collections.sort(this.usuarios, cmp);
         return this.usuarios;
     }
 
@@ -161,6 +171,13 @@ public class GestorUsuarios implements IGestorUsuarios {
                     usuariosBuscados.add(usuario);
             }                
         }
+        Comparator<Usuario> cmp = (u1, u2) -> {
+            if (u1.verApellido().compareToIgnoreCase(u2.verApellido()) == 0)
+                return u1.verNombre().compareToIgnoreCase(u2.verNombre());
+            else
+                return u1.verApellido().compareToIgnoreCase(u2.verApellido());
+        };
+        Collections.sort(usuariosBuscados, cmp);
         return usuariosBuscados;        
     }
 

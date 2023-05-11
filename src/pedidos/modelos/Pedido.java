@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import productos.modelos.Producto;
 import usuarios.modelos.Cliente;
 
@@ -20,7 +21,7 @@ import usuarios.modelos.Cliente;
 public class Pedido {
     private int numero;
     private LocalDateTime fechaYHora;
-    private ArrayList<ProductoDelPedido> productosDelPedido = new ArrayList<>();
+    private List<ProductoDelPedido> productosDelPedido = new ArrayList<>();
     private Cliente cliente;
     private Estado estado;
     
@@ -31,7 +32,7 @@ public class Pedido {
      * @param productosDelPedido productos del pedido
      * @param cliente cliente del pedido
     */    
-    public Pedido(int numero, LocalDateTime fechaYHora, ArrayList<ProductoDelPedido> productosDelPedido, Cliente cliente) {
+    public Pedido(int numero, LocalDateTime fechaYHora, List<ProductoDelPedido> productosDelPedido, Cliente cliente) {
         this(numero, fechaYHora, productosDelPedido, Estado.CREADO, cliente);
     }
     
@@ -43,7 +44,7 @@ public class Pedido {
      * @param estado estado del pedido
      * @param cliente cliente del pedido
     */
-    public Pedido(int numero, LocalDateTime fechaYHora, ArrayList<ProductoDelPedido> productosDelPedido, Estado estado, Cliente cliente) {
+    public Pedido(int numero, LocalDateTime fechaYHora, List<ProductoDelPedido> productosDelPedido, Estado estado, Cliente cliente) {
         this.numero = numero;
         this.fechaYHora = fechaYHora;
         this.productosDelPedido = productosDelPedido;
@@ -71,11 +72,11 @@ public class Pedido {
         return cliente;
     }
 
-    public ArrayList<ProductoDelPedido> verProductosDelPedido() {
+    public List<ProductoDelPedido> verProductosDelPedido() {
         return this.productosDelPedido;
     }
 
-    public void asignarProductosDelPedido(ArrayList<ProductoDelPedido> productos) {
+    public void asignarProductosDelPedido(List<ProductoDelPedido> productos) {
         this.productosDelPedido = productos;
     }
     

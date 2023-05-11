@@ -10,9 +10,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import productos.modelos.Producto;
 import usuarios.modelos.Cliente;
-import usuarios.modelos.Usuario;
 
 /**
  *
@@ -53,7 +55,7 @@ public class GestorPedidos implements IGestorPedidos {
     @Override
     public boolean hayPedidosConEsteProducto(Producto producto) {
         for(Pedido p : this.pedidos) {
-            ArrayList<ProductoDelPedido> productosDelPedido = p.verProductosDelPedido();
+            List<ProductoDelPedido> productosDelPedido = p.verProductosDelPedido();
             for(ProductoDelPedido pdp : productosDelPedido) {
                 if(pdp.verProducto().equals(producto))
                     return true;
@@ -63,7 +65,7 @@ public class GestorPedidos implements IGestorPedidos {
     }
 
     @Override
-    public String crearPedido(LocalDate fecha, LocalTime hora, ArrayList<ProductoDelPedido> productosDelPedido, Cliente cliente) {
+    public String crearPedido(LocalDate fecha, LocalTime hora, List<ProductoDelPedido> productosDelPedido, Cliente cliente) {
         Pedido pedido;
         String resultadoValidacion = this.validarPedido(fecha, hora, productosDelPedido, cliente);
         if (!resultadoValidacion.equals(VALIDACION_EXITO))
@@ -82,7 +84,7 @@ public class GestorPedidos implements IGestorPedidos {
         }        
     }
     
-    private String validarPedido(LocalDate fecha, LocalTime hora, ArrayList<ProductoDelPedido> productosDelPedido, Cliente cliente) {
+    private String validarPedido(LocalDate fecha, LocalTime hora, List<ProductoDelPedido> productosDelPedido, Cliente cliente) {
         if (!this.validarFecha(fecha))
             return ERROR_FECHA;
         
@@ -124,7 +126,7 @@ public class GestorPedidos implements IGestorPedidos {
      * @param productosDelPedido lista de productos del pedido
      * @return boolean  - true si la lista de productos del pedido es correcta, false en caso contrario
     */
-    private boolean validarProductosDelPedido(ArrayList<ProductoDelPedido> productosDelPedido) {
+    private boolean validarProductosDelPedido(List<ProductoDelPedido> productosDelPedido) {
         return (productosDelPedido != null) && (!productosDelPedido.isEmpty());
     }
     
@@ -169,6 +171,8 @@ public class GestorPedidos implements IGestorPedidos {
 
     @Override
     public ArrayList<Pedido> verPedidos() {
+        Comparator<Pedido> cmp = (p1, p2) -> p1.verNumero() - p2.verNumero();
+        Collections.sort(this.pedidos, cmp);
         return this.pedidos;
     }
 

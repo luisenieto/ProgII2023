@@ -5,7 +5,7 @@
  */
 package interfaces;
 
-import java.util.ArrayList;
+import java.util.List;
 import usuarios.modelos.Perfil;
 import usuarios.modelos.Usuario;
 
@@ -42,21 +42,22 @@ public interface IGestorUsuarios {
     public String crearUsuario(String correo, String apellido, String nombre, Perfil perfil, String clave, String claveRepetida);
     
     /**
-     * Devuelve todos los usuarios
+     * Devuelve todos los usuarios, ordenados alfabéticamente por apellido y luego alfabéticamente por el nombre
      * Que se devuelvan todos los usuarios, o una lista vacía, depende de los permisos del usuario logueado
      * Este método es necesario para las clases ModeloTablaUsuarios
-     * @return ArrayList<Usuario>  - lista de usuarios
+     * @return List<Usuario>  - lista de usuarios
     */                                                                           
-    public ArrayList<Usuario> verUsuarios();
+    public List<Usuario> verUsuarios();
     
     /**
      * Busca si existen usuarios con el apellido especificado (total o parcialmente)
+     * La lista de usuarios que coincidan con el apellido especificado se devuelve ordenada alfabéticamente por apellido y luego alfabéticamente por el nombre
      * Que se busquen los usuarios con el apellido especificado, o se devuelva una lista vacía, depende de los permisos del usuario logueado
      * Este método es usado por la clase ModeloTablaUsuarios
      * @param apellido apellido del usuario a buscar
-     * @return ArrayList<Usuario>  - lista de usuarios
+     * @return List<Usuario>  - lista de usuarios
     */                                                                            
-    public ArrayList<Usuario> buscarUsuarios(String apellido); 
+    public List<Usuario> buscarUsuarios(String apellido); 
     
     /**
      * Borra un usuario siempre y cuando el usuario logueado pueda hacerlo y no haya pedidos con el mismo
