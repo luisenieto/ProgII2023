@@ -75,7 +75,7 @@ public interface IGestorProductos {
     public String modificarProducto(Usuario usuarioLogueado, Producto productoAModificar, int codigo, String descripcion, float precio, Categoria categoria, Estado estado);
     
     /**
-     * Devuelve todos los productos ordenados por descripción, y luego por nombre
+     * Devuelve todos los productos, ordenados por categoría y luego alfabéticamente por la descripción
      * Que se devuelvan todos los productos, o una lista vacía, depende de los permisos del usuario logueado
      * Este método es necesario para las clases ModeloTablaProductos
      * @param usuarioLogueado usuario actualmente logueado
@@ -85,6 +85,7 @@ public interface IGestorProductos {
     
     /**
      * Busca si existen productos con la descripción especificada (total o parcialmente)
+     * Los productos que coincidan con la descripción se devuelven ordenados por categoría y luego alfabéticamente por la descripción
      * Este método es usado por la clase ModeloTablaProductos
      * @param usuarioLogueado usuario actualmente logueado
      * @param descripcion descripción del producto a buscar
@@ -109,6 +110,7 @@ public interface IGestorProductos {
     
     /**
      * Devuelve los productos con la categoría especificada
+     * Los productos con la categoría especificada se devuelven ordenados alfabéticamente según la descripción
      * Si no hay productos con la categoría, devuelve una lista vacía
      * @param categoria categoría de los productos a buscar
      * @return List<Producto>  - lista de productos con la categoría especificada

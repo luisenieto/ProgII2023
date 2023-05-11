@@ -91,12 +91,11 @@ public interface IGestorPedidos {
     
     
     /**
-     * Devuelve todos los pedidos ordenados por ....
+     * Devuelve todos los pedidos ordenados ascendentemente por número
      * Si el usuario logueado es Encargado o Empleado, devuelve todos los pedidos
      * Si el usuario logueado es Cliente, devuelve sólo los suyos
-     * Este método es necesario para las clases ....
      * @param usuarioLogueado usuario actualmente logueado
-     * @return List<Pedido>  - lista de pedidos ordenados por ...
+     * @return List<Pedido>  - lista de pedidos
     */                                                                           
     public List<Pedido> verPedidos(Usuario usuarioLogueado);  
     

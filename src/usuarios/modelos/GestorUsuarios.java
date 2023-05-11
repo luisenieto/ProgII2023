@@ -291,6 +291,13 @@ public class GestorUsuarios implements IGestorUsuarios {
                         usuariosBuscados.add(usuario);
                 }                
             }
+            Comparator<Usuario> cmp = (u1, u2) -> {
+                if (u1.verApellido().compareToIgnoreCase(u2.verApellido()) == 0)
+                    return u1.verNombre().compareToIgnoreCase(u2.verNombre());
+                else
+                    return u1.verApellido().compareToIgnoreCase(u2.verApellido());
+            };
+            Collections.sort(usuariosBuscados, cmp);
             return usuariosBuscados;
         }
         else 

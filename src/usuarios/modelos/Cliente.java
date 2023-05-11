@@ -6,6 +6,8 @@
 package usuarios.modelos;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import pedidos.modelos.Pedido;
 
@@ -48,6 +50,8 @@ public class Cliente extends Usuario {
 
     @Override
     public List<Pedido> verPedidos() {
+        Comparator<Pedido> cmp = (p1, p2) -> p2.verNumero() - p1.verNumero();
+        Collections.sort(this.pedidos, cmp);
         return this.pedidos;
     }
     

@@ -20,6 +20,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import permisos.modelos.GestorPermisos;
 import productos.modelos.GestorProductos;
@@ -307,8 +309,11 @@ public class GestorPedidos implements IGestorPedidos {
             return listaVacia;
         }
         else {    
-            if (usuarioLogueado.verPerfil() == Perfil.ENCARGADO || usuarioLogueado.verPerfil() == Perfil.EMPLEADO)
+            if (usuarioLogueado.verPerfil() == Perfil.ENCARGADO || usuarioLogueado.verPerfil() == Perfil.EMPLEADO) {
+                Comparator<Pedido> cmp = (p1, p2) -> p1.verNumero() - p2.verNumero();
+                Collections.sort(this.pedidos, cmp);
                 return this.pedidos; //todos los pedidos
+            }
             else
                 return usuarioLogueado.verPedidos(); //sólo los pedidos del cliente
         }

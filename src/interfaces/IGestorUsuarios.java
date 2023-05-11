@@ -100,7 +100,7 @@ public interface IGestorUsuarios {
     public String modificarUsuario(Usuario usuarioLogueado, Usuario usuarioAModificar, String correo, String apellido, String nombre, Perfil perfil, String clave, String claveRepetida);
     
     /**
-     * Devuelve todos los usuarios ordenados por apellido,nombre
+     * Devuelve todos los usuarios, ordenados alfabéticamente por apellido y luego alfabéticamente por el nombre
      * Que se devuelvan todos los usuarios, o una lista vacía, depende de los permisos del usuario logueado
      * Este método es necesario para las clases ModeloTablaUsuarios
      * @param usuarioLogueado usuario actualmente logueado
@@ -110,6 +110,7 @@ public interface IGestorUsuarios {
     
     /**
      * Busca si existen usuarios con el apellido especificado (total o parcialmente)
+     * La lista de usuarios que coincidan con el apellido especificado se devuelve ordenada alfabéticamente por apellido y luego alfabéticamente por el nombre
      * Que se busquen los usuarios con el apellido especificado, o se devuelva una lista vacía, depende de los permisos del usuario logueado
      * Este método es usado por la clase ModeloTablaUsuarios
      * @param usuarioLogueado usuario actualmente logueado

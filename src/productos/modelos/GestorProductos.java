@@ -220,6 +220,13 @@ public class GestorProductos implements IGestorProductos {
                         productosBuscados.add(producto);
                 }            
             }
+            Comparator<Producto> cmp = (p1, p2) -> {
+                if (p1.verCategoria() == p2.verCategoria())
+                    return p1.verDescripcion().compareToIgnoreCase(p2.verDescripcion());
+                else
+                    return p1.verCategoria().compareTo(p2.verCategoria());
+            };
+            Collections.sort(productosBuscados, cmp);
             return productosBuscados;    
         }
         else {
