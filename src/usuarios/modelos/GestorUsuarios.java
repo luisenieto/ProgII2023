@@ -146,13 +146,13 @@ public class GestorUsuarios implements IGestorUsuarios {
         return VALIDACION_EXITO;
     }
     
-        /**
+    /**
      * Valida que el correo del usuario tengan el caracter "@"
      * @param correo dni del usuario
      * @return boolean  - true si el correo del usuario tiene el caracter "@"
      */
     private boolean validarCorreo(String correo) {
-        return correo.contains("@");
+        return (correo != null) && (correo.contains("@"));
     }
     
     /**
@@ -302,10 +302,17 @@ public class GestorUsuarios implements IGestorUsuarios {
         IGestorPermisos gPer = GestorPermisos.instanciar();
         if (gPer.borrarUsuarios(usuarioLogueado, usuario)) {
             if (this.existeEsteUsuario(usuario)) {
-                IGestorPedidos gp = GestorPedidos.instanciar();
-                if (gp.hayPedidosConEsteUsuario(usuario))  //hay al menos un pedido con este usuario
-                    return PEDIDO_CON_USUARIO;
-                else { //no hay pedidos con este usuario
+                if (usuario instanceof Cliente) {
+                    IGestorPedidos gp = GestorPedidos.instanciar();
+                    if (gp.hayPedidosConEsteCliente((Cliente)usuario))  //hay al menos un pedido con este cliente
+                        return PEDIDO_CON_CLIENTE;
+                    else { //no hay pedidos con este cliente
+                        this.usuarios.remove(usuario);
+                        String resultado = this.escribirArchivo();
+                        return (resultado.equals(ESCRITURA_OK) ? EXITO : ESCRITURA_ERROR);                
+                    }
+                }
+                else {
                     this.usuarios.remove(usuario);
                     String resultado = this.escribirArchivo();
                     return (resultado.equals(ESCRITURA_OK) ? EXITO : ESCRITURA_ERROR);                

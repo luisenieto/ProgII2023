@@ -43,10 +43,10 @@ public interface IGestorPedidos {
     
     /**
      * Devuelve true si hay al menos un pedido con el usuario especificado, false en caso contrario
-     * @param usuario usuario a buscar
+     * @param cliente cliente a buscar
      * @return boolean  - true si hay al menos un pedido con el usuario especificado, false en caso contrario
     */
-    public boolean hayPedidosConEsteUsuario(Usuario usuario);
+    public boolean hayPedidosConEsteCliente(Cliente cliente);
     
     /**
      * Devuelve true si hay al menos un pedido con el producto especificado, false en caso contrario
@@ -123,5 +123,13 @@ public interface IGestorPedidos {
      * @return boolean  - true si existe el pedido especificado, false en caso contrario
     */
     public boolean existeEstePedido(Pedido pedido);
+    
+    /**
+     * Obtiene el pedido con el número especificado
+     * Si no hay un producto con el número, devuelve null
+     * @param numero número de pedido a buscar
+     * @return Pedido  - pedido con el número especificado, o null
+    */                                                                            
+    public Pedido obtenerPedido(Integer numero);
     
 }

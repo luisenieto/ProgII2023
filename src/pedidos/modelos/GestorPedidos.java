@@ -79,12 +79,23 @@ public class GestorPedidos implements IGestorPedidos {
     }
 
     @Override
-    public boolean hayPedidosConEsteUsuario(Usuario usuario) {
+    public boolean hayPedidosConEsteCliente(Cliente cliente) {
+        for(Pedido p : this.pedidos) {
+            if (p.verCliente().equals(cliente))
+                return true;
+        }
         return false;
     }
 
     @Override
     public boolean hayPedidosConEsteProducto(Producto producto) {
+        for(Pedido p : this.pedidos) {
+            List<ProductoDelPedido> productosDelPedido = p.verProductosDelPedido();
+            for(ProductoDelPedido pdp : productosDelPedido) {
+                if(pdp.verProducto().equals(producto))
+                    return true;
+            }
+        }
         return false;
     }
     
@@ -449,4 +460,19 @@ public class GestorPedidos implements IGestorPedidos {
         else
             return null;
     }
+
+    @Override
+    public Pedido obtenerPedido(Integer numero) {
+        if (numero == null)
+            return null;
+        else {
+            for(Pedido p : this.pedidos) {
+                if (p.verNumero() == numero)
+                    return p;
+            }
+            return null;
+        }
+    }
+    
+    
 }
