@@ -11,11 +11,20 @@ import usuarios.modelos.Encargado;
 import usuarios.modelos.Usuario;
 import usuarios.modelos.Empleado;
 import usuarios.modelos.Cliente;
+import usuarios.modelos.GestorUsuarios;
+import interfaces.IGestorUsuarios;
+import interfaces.IGestorProductos;
+import interfaces.IGestorPedidos;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import pedidos.modelos.Pedido;
 import pedidos.modelos.ProductoDelPedido;
+import pedidos.modelos.GestorPedidos;
+import pedidos.modelos.Pedido;
 import productos.modelos.Categoria;
 import productos.modelos.Estado;
+import productos.modelos.GestorProductos;
+import usuarios.modelos.Perfil;
 
 
 /**
@@ -24,115 +33,173 @@ import productos.modelos.Estado;
  */
 public class ControladorPrincipal  {
     public static void main(String[] args) {
-/*      Primera parte  
+        IGestorUsuarios gu = GestorUsuarios.instanciar();
+        IGestorProductos gp = GestorProductos.instanciar();
+        IGestorPedidos gPed = GestorPedidos.instanciar();
         
-        ArrayList<Cliente> clientes = new ArrayList<>();
-        ArrayList<Empleado> empleados = new ArrayList<>();
-        ArrayList<Encargado> encargados = new ArrayList<>();
-        ArrayList<Producto> productos = new ArrayList<>();
-        ArrayList<Pedido> pedidos = new ArrayList<>();
-        
-        Cliente unCliente1 = new Cliente("cliente1@bar.com", "claveCliente1", "ApellidoCliente1", "NombreCliente1");        
-        Cliente unCliente2 = new Cliente("cliente2@bar.com", "claveCliente2", "ApellidoCliente2", "NombreCliente2");       
-        Cliente unCliente3 = new Cliente("cliente3@bar.com", "claveCliente3", "ApellidoCliente3", "NombreCliente3");
-        Cliente unCliente4 = new Cliente("cliente3@bar.com", "claveCliente4", "ApellidoCliente4", "NombreCliente4"); 
-        //cliente repetido
-        
-        if (!clientes.contains(unCliente1))
-            clientes.add(unCliente1);
-        if (!clientes.contains(unCliente2))
-            clientes.add(unCliente2);
-        if (!clientes.contains(unCliente3))
-            clientes.add(unCliente3);
-        if (!clientes.contains(unCliente4))
-            clientes.add(unCliente4);
+        System.out.println(gu.crearUsuario("cliente1@bar.com", "ApellidoCliente1", "NombreCliente1", Perfil.CLIENTE, "claveCliente1", "claveCliente1"));
+        System.out.println(gu.crearUsuario("cliente2@bar.com", "ApellidoCliente2", "NombreCliente2", Perfil.CLIENTE, "claveCliente2", "claveCliente2"));
+        System.out.println(gu.crearUsuario("cliente3@bar.com", "ApellidoCliente3", "NombreCliente3", Perfil.CLIENTE, "claveCliente3", "claveCliente3"));
+        System.out.println(gu.crearUsuario("cliente3@bar.com", "ApellidoCliente4", "NombreCliente4", Perfil.CLIENTE, "claveCliente4", "claveCliente4"));
+        //cliente duplicado
+        System.out.println(gu.crearUsuario(null, "ApellidoCliente4", "NombreCliente4", Perfil.CLIENTE, "claveCliente4", "claveCliente4"));
+        //sin correo
+        System.out.println(gu.crearUsuario("", "ApellidoCliente4", "NombreCliente4", Perfil.CLIENTE, "claveCliente4", "claveCliente4"));
+        //correo inválido
+        System.out.println(gu.crearUsuario("cliente4@bar.com", null, "NombreCliente4", Perfil.CLIENTE, "claveCliente4", "claveCliente4"));
+        //sin apellido
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "", "NombreCliente4", Perfil.CLIENTE, "claveCliente4", "claveCliente4"));
+        //apellido inválido
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "ApellidoCliente4", null, Perfil.CLIENTE, "claveCliente4", "claveCliente4"));
+        //sin nombre
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "ApellidoCliente4", "", Perfil.CLIENTE, "claveCliente4", "claveCliente4"));
+        //nombre inválido
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "ApellidoCliente4", "NombreCliente4", null, "claveCliente4", "claveCliente4"));
+        //sin perfil
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "ApellidoCliente4", "NombreCliente4", Perfil.CLIENTE, null, "claveCliente4"));
+        //sin clave
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "ApellidoCliente4", "NombreCliente4", Perfil.CLIENTE, "", "claveCliente4"));
+        //clave inválida
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "ApellidoCliente4", "NombreCliente4", Perfil.CLIENTE, "claveCliente4", null));
+        //sin repetir la clave
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "ApellidoCliente4", "NombreCliente4", Perfil.CLIENTE, "claveCliente4", ""));
+        //clave repetida inválida
+        System.out.println(gu.crearUsuario("cliente4@bar.com", "ApellidoCliente4", "NombreCliente4", Perfil.CLIENTE, "claveCliente4", "claveCliente44"));
+        //sin coincidir las claves
         
         System.out.println("Clientes");
         System.out.println("========");
-        for(Cliente c : clientes) {
-            c.mostrar();
-            System.out.println();
+        for(Usuario u : gu.verUsuarios()) {
+            if (u instanceof Cliente) {
+                u.mostrar();
+                System.out.println();
+            }
         }
-        System.out.println();        
-                
-        Empleado unEmpleado1 = new Empleado("empleado1@bar.com", "claveEmpleado1", "ApellidoEmpleado1", "NombreEmpleado1");        
-        Empleado unEmpleado2 = new Empleado("empleado2@bar.com", "claveEmpleado2", "ApellidoEmpleado2", "NombreEmpleado2");        
-        Empleado unEmpleado3 = new Empleado("empleado3@bar.com", "claveEmpleado3", "ApellidoEmpleado3", "NombreEmpleado3");
-        Empleado unEmpleado4 = new Empleado("empleado3@bar.com", "claveEmpleado4", "ApellidoEmpleado4", "NombreEmpleado4");
-        //empleado repetido
+        System.out.println();
         
-        if (!empleados.contains(unEmpleado1))
-            empleados.add(unEmpleado1);
-        if (!empleados.contains(unEmpleado2))
-            empleados.add(unEmpleado2);
-        if (!empleados.contains(unEmpleado3))
-            empleados.add(unEmpleado3);
-        if (!empleados.contains(unEmpleado4))
-            empleados.add(unEmpleado4);
+        System.out.println(gu.crearUsuario("empleado1@bar.com", "ApellidoEmpleado1", "NombreEmpleado1", Perfil.EMPLEADO, "claveEmpleado1", "claveEmpleado1"));
+        System.out.println(gu.crearUsuario("empleado2@bar.com", "ApellidoEmpleado2", "NombreEmpleado2", Perfil.EMPLEADO, "claveEmpleado2", "claveEmpleado2"));
+        System.out.println(gu.crearUsuario("empleado3@bar.com", "ApellidoEmpleado3", "NombreEmpleado3", Perfil.EMPLEADO, "claveEmpleado3", "claveEmpleado3"));
+        System.out.println(gu.crearUsuario("empleado3@bar.com", "ApellidoEmpleado4", "NombreEmpleado4", Perfil.EMPLEADO, "claveEmpleado4", "claveEmpleado4"));
+        //empleado duplicado
+        System.out.println(gu.crearUsuario(null, "ApellidoEmpleado4", "NombreEmpleado4", Perfil.EMPLEADO, "claveEmpleado4", "claveEmpleado4"));
+        //sin correo
+        System.out.println(gu.crearUsuario("", "ApellidoEmpleado4", "NombreEmpleado4", Perfil.EMPLEADO, "claveEmpleado4", "claveEmpleado4"));
+        //correo inválido
+        System.out.println(gu.crearUsuario("empleado4@bar.com", null, "NombreEmpleado4", Perfil.EMPLEADO, "claveEmpleado4", "claveEmpleado4"));
+        //sin apellido
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "", "NombreEmpleado4", Perfil.EMPLEADO, "claveEmpleado4", "claveEmpleado4"));
+        //apellido inválido
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "ApellidoEmpleado4", null, Perfil.EMPLEADO, "claveEmpleado4", "claveEmpleado4"));
+        //sin nombre
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "ApellidoEmpleado4", "", Perfil.EMPLEADO, "claveEmpleado4", "claveEmpleado4"));
+        //nombre inválido
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "ApellidoEmpleado4", "NombreEmpleado4", null, "claveEmpleado4", "claveEmpleado4"));
+        //sin perfil
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "ApellidoEmpleado4", "NombreEmpleado4", Perfil.EMPLEADO, null, "claveEmpleado4"));
+        //sin clave
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "ApellidoEmpleado4", "NombreEmpleado4", Perfil.EMPLEADO, "", "claveEmpleado4"));
+        //clave sin especificar
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "ApellidoEmpleado4", "NombreEmpleado4", Perfil.EMPLEADO, "claveEmpleado4", null));
+        //sin repetir clave        
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "ApellidoEmpleado4", "NombreEmpleado4", Perfil.EMPLEADO, "claveEmpleado4", ""));
+        //clave repetida inválida
+        System.out.println(gu.crearUsuario("empleado4@bar.com", "ApellidoEmpleado4", "NombreEmpleado4", Perfil.EMPLEADO, "claveEmpleado4", "claveEmpleado44"));
+        //sin coincidir las claves
         
         System.out.println("Empleados");
         System.out.println("=========");
-        for(Empleado e : empleados) {
-            e.mostrar();
-            System.out.println();
+        for(Usuario u : gu.verUsuarios()) {
+            if (u instanceof Empleado) {
+                u.mostrar();
+                System.out.println();
+            }
         }
         System.out.println();
 
-        Encargado unEncargado1 = new Encargado("encargado1@bar.com", "claveEncargado1", "ApellidoEncargado1", "NombreEncargado1");
-        Encargado unEncargado2 = new Encargado("encargado2@bar.com", "claveEncargado2", "ApellidoEncargado2", "NombreEncargado2");
-        Encargado unEncargado3 = new Encargado("encargado3@bar.com", "claveEncargado3", "ApellidoEncargado3", "NombreEncargado3");
-        Encargado unEncargado4 = new Encargado("encargado3@bar.com", "claveEncargado4", "ApellidoEncargado4", "NombreEncargado4");
-        //encargado repetido
+        System.out.println(gu.crearUsuario("encargado1@bar.com", "ApellidoEncargado1", "NombreEncargado1", Perfil.ENCARGADO, "claveEncargado1", "claveEncargado1"));
+        System.out.println(gu.crearUsuario("encargado2@bar.com", "ApellidoEncargado2", "NombreEncargado2", Perfil.ENCARGADO, "claveEncargado2", "claveEncargado2"));
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado3", "NombreEncargado3", Perfil.ENCARGADO, "claveEncargado3", "claveEncargado3"));
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", "NombreEncargado4", Perfil.ENCARGADO, "claveEncargado4", "claveEncargado4"));
+        //encargado duplicado
+        System.out.println(gu.crearUsuario(null, "ApellidoEncargado4", "NombreEncargado4", Perfil.ENCARGADO, "claveEncargado4", "claveEncargado4"));
+        //sin correo
+        System.out.println(gu.crearUsuario("", "ApellidoEncargado4", "NombreEncargado4", Perfil.ENCARGADO, "claveEncargado4", "claveEncargado4"));
+        //correo inválido
+        System.out.println(gu.crearUsuario("encargado3@bar.com", null, "NombreEncargado4", Perfil.ENCARGADO, "claveEncargado4", "claveEncargado4"));
+        //sin apellido
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "", "NombreEncargado4", Perfil.ENCARGADO, "claveEncargado4", "claveEncargado4"));
+        //apellido inválido
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", null, Perfil.ENCARGADO, "claveEncargado4", "claveEncargado4"));
+        //sin nombre
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", "", Perfil.ENCARGADO, "claveEncargado4", "claveEncargado4"));
+        //nombre inválido
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", "NombreEncargado4", null, "claveEncargado4", "claveEncargado4"));
+        //sin perfil
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", "NombreEncargado4", Perfil.ENCARGADO, null, "claveEncargado4"));
+        //sin clave
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", "NombreEncargado4", Perfil.ENCARGADO, "", "claveEncargado4"));
+        //clave sin especificar
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", "NombreEncargado4", Perfil.ENCARGADO, "claveEncargado4", null));
+        //sin repetir clave        
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", "NombreEncargado4", Perfil.ENCARGADO, "claveEncargado4", ""));
+        //clave repetida inválida
+        System.out.println(gu.crearUsuario("encargado3@bar.com", "ApellidoEncargado4", "NombreEncargado4", Perfil.ENCARGADO, "claveEncargado4", "claveEncargado44"));
+        //sin coincidir las claves
 
-        if(!encargados.contains(unEncargado1))
-            encargados.add(unEncargado1);
-        if(!encargados.contains(unEncargado2))
-            encargados.add(unEncargado2);
-        if(!encargados.contains(unEncargado3))
-            encargados.add(unEncargado3);
-        if(!encargados.contains(unEncargado4))
-            encargados.add(unEncargado4);
-        
         System.out.println("Encargados");
         System.out.println("==========");
-        for(Encargado e : encargados) {
-            e.mostrar();
-            System.out.println();
+        for(Usuario u : gu.verUsuarios()) {
+            if (u instanceof Encargado) {
+                u.mostrar();
+                System.out.println();
+            }
         }
         System.out.println();
+
         
-        Producto unProducto1 = new Producto(1, "Producto1", Categoria.ENTRADA, Estado.DISPONIBLE, 1.0f);        
-        Producto unProducto2 = new Producto(2, "Producto2", Categoria.PLATO_PRINCIPAL, Estado.DISPONIBLE, 2.0f);
-        Producto unProducto3 = new Producto(3, "Producto3", Categoria.POSTRE, Estado.DISPONIBLE, 3.0f);
-        Producto unProducto4 = new Producto(3, "Producto4", Categoria.POSTRE, Estado.DISPONIBLE, 4.0f);
+        System.out.println(gp.crearProducto(1, "Producto1", 1.0f, Categoria.ENTRADA, Estado.DISPONIBLE));
+        System.out.println(gp.crearProducto(2, "Producto2", 2.0f, Categoria.PLATO_PRINCIPAL, Estado.DISPONIBLE));
+        System.out.println(gp.crearProducto(3, "Producto3", 3.0f, Categoria.POSTRE, Estado.DISPONIBLE));
+        System.out.println(gp.crearProducto(3, "Producto4", 4.0f, Categoria.POSTRE, Estado.DISPONIBLE));
         //producto repetido
-        
-        if(!productos.contains(unProducto1))
-            productos.add(unProducto1);
-        if(!productos.contains(unProducto2))
-            productos.add(unProducto2);
-        if(!productos.contains(unProducto3))
-            productos.add(unProducto3);
-        if(!productos.contains(unProducto4))
-            productos.add(unProducto4);
-        
+        System.out.println(gp.crearProducto(0, "Producto4", 4.0f, Categoria.POSTRE, Estado.DISPONIBLE));
+        //código inválido
+        System.out.println(gp.crearProducto(4, null, 4.0f, Categoria.POSTRE, Estado.DISPONIBLE));
+        //sin descripción
+        System.out.println(gp.crearProducto(4, "", 4.0f, Categoria.POSTRE, Estado.DISPONIBLE));
+        //descripción inválida
+        System.out.println(gp.crearProducto(4, "Producto4", 0.0f, Categoria.POSTRE, Estado.DISPONIBLE));
+        //precio inválido
+        System.out.println(gp.crearProducto(4, "Producto4", 4.0f, null, Estado.DISPONIBLE));
+        //sin categoría
+        System.out.println(gp.crearProducto(4, "Producto4", 4.0f, Categoria.POSTRE, null));
+        //sin estado
+
         System.out.println("Productos");
         System.out.println("=========");
-        for(Producto p : productos) {
+        for(Producto p : gp.menu()) {
             p.mostrar();
             System.out.println();
         }
         System.out.println();
-                     
+
+        Usuario unCliente1 = gu.obtenerUsuario("cliente1@bar.com");
+        Producto unProducto1 = gp.obtenerProducto(1);
+        Producto unProducto2 = gp.obtenerProducto(2);
         ArrayList<ProductoDelPedido> productosDelPedido1 = new ArrayList<>();
         ProductoDelPedido pdp1 = new ProductoDelPedido(unProducto1, 1);
-        ProductoDelPedido pdp2 = new ProductoDelPedido(unProducto2, 2);        
+        ProductoDelPedido pdp2 = new ProductoDelPedido(unProducto2, 2); 
+        LocalDateTime fechaYHora = LocalDateTime.now();
+        LocalDate fecha = fechaYHora.toLocalDate();
+        LocalTime hora = fechaYHora.toLocalTime();
         if (!productosDelPedido1.contains(pdp1))
             productosDelPedido1.add(pdp1);
         if (!productosDelPedido1.contains(pdp2))
             productosDelPedido1.add(pdp2);
-        Pedido unPedido1 = new Pedido(1, LocalDateTime.now(), productosDelPedido1, unCliente1);        
-        
+        System.out.println(gPed.crearPedido(fecha, hora, productosDelPedido1, (Cliente)unCliente1));
+
+        Usuario unCliente2 = gu.obtenerUsuario("cliente2@bar.com");
         ArrayList<ProductoDelPedido> productosDelPedido2 = new ArrayList<>();
         ProductoDelPedido pdp3 = new ProductoDelPedido(unProducto1, 10);
         ProductoDelPedido pdp4 = new ProductoDelPedido(unProducto2, 20);
@@ -144,246 +211,57 @@ public class ControladorPrincipal  {
             productosDelPedido2.add(pdp4);
         if (!productosDelPedido2.contains(pdp5))
             productosDelPedido2.add(pdp5);
-        Pedido unPedido2 = new Pedido(2, LocalDateTime.now(), productosDelPedido2, unCliente2);        
-        
-        ArrayList<ProductoDelPedido> productosDelPedido3 = new ArrayList<>();
-        ProductoDelPedido pdp6 = new ProductoDelPedido(unProducto1, 100);
-        ProductoDelPedido pdp7 = new ProductoDelPedido(unProducto2, 200);
-        if (!productosDelPedido3.contains(pdp6))
-            productosDelPedido3.add(pdp6);
-        if (!productosDelPedido3.contains(pdp7))
-            productosDelPedido3.add(pdp7);
-        Pedido unPedido3 = new Pedido(2, LocalDateTime.now(), productosDelPedido3, unCliente3);        
-        //pedido repetido
+        System.out.println(gPed.crearPedido(fecha, hora, productosDelPedido2, (Cliente)unCliente2));
 
-        if(!pedidos.contains(unPedido1))
-            pedidos.add(unPedido1);
-        if(!pedidos.contains(unPedido2))
-            pedidos.add(unPedido2);
-        if(!pedidos.contains(unPedido3))
-            pedidos.add(unPedido3);
+        System.out.println(gPed.crearPedido(null, hora, productosDelPedido2, (Cliente)unCliente1));
+        //sin fecha
+        System.out.println(gPed.crearPedido(fecha, null, productosDelPedido2, (Cliente)unCliente1));
+        //sin hora
+        ArrayList<ProductoDelPedido> productosDelPedido3 = new ArrayList<>();
+        System.out.println(gPed.crearPedido(fecha, hora, null, (Cliente)unCliente1));
+        //sin productos
+        System.out.println(gPed.crearPedido(fecha, hora, productosDelPedido3, (Cliente)unCliente1));
+        //sin productos
+        System.out.println(gPed.crearPedido(fecha, hora, productosDelPedido2, null));
+        //sin cliente
         
         System.out.println("Pedidos");
         System.out.println("=======");
-        for(Pedido p : pedidos) {
+        for(Pedido p : gPed.verPedidos()) {
             p.mostrar();
             System.out.println();
         }
         System.out.println();        
-*/
 
-/*      Segunda parte
-
-        ArrayList<Usuario> usuarios = new ArrayList<>();
         
-        Usuario unCliente1 = new Cliente("cliente1@bar.com", "claveCliente1", "ApellidoCliente1", "NombreCliente1");        
-        Usuario unCliente2 = new Cliente("cliente2@bar.com", "claveCliente2", "ApellidoCliente2", "NombreCliente2");       
-        Usuario unCliente3 = new Cliente("cliente3@bar.com", "claveCliente3", "ApellidoCliente3", "NombreCliente3");
-        Usuario unCliente4 = new Cliente("cliente3@bar.com", "claveCliente4", "ApellidoCliente4", "NombreCliente4"); 
-        //cliente repetido
-        
-        if (!usuarios.contains(unCliente1))
-            usuarios.add(unCliente1);
-        if (!usuarios.contains(unCliente2))
-            usuarios.add(unCliente2);
-        if (!usuarios.contains(unCliente3))
-            usuarios.add(unCliente3);
-        if (!usuarios.contains(unCliente4))
-            usuarios.add(unCliente4);
-        
-        System.out.println("Clientes");
-        System.out.println("========");
-        for(Usuario c : usuarios) {
-            if (c instanceof Cliente) {
-                c.mostrar();
-                System.out.println();
-            }
-        }
-        System.out.println();        
-                
-        Usuario unEmpleado1 = new Empleado("empleado1@bar.com", "claveEmpleado1", "ApellidoEmpleado1", "NombreEmpleado1");        
-        Usuario unEmpleado2 = new Empleado("empleado2@bar.com", "claveEmpleado2", "ApellidoEmpleado2", "NombreEmpleado2");        
-        Usuario unEmpleado3 = new Empleado("empleado3@bar.com", "claveEmpleado3", "ApellidoEmpleado3", "NombreEmpleado3");
-        Usuario unEmpleado4 = new Empleado("empleado3@bar.com", "claveEmpleado4", "ApellidoEmpleado4", "NombreEmpleado4");
-        //empleado repetido
-        
-        if (!usuarios.contains(unEmpleado1))
-            usuarios.add(unEmpleado1);
-        if (!usuarios.contains(unEmpleado2))
-            usuarios.add(unEmpleado2);
-        if (!usuarios.contains(unEmpleado3))
-            usuarios.add(unEmpleado3);
-        if (!usuarios.contains(unEmpleado4))
-            usuarios.add(unEmpleado4);
-        
-        System.out.println("Empleados");
-        System.out.println("=========");
-        for(Usuario e : usuarios) {
-            if (e instanceof Empleado) {
-                e.mostrar();
-                System.out.println();
-            }
-        }
-        System.out.println();
-
-        Usuario unEncargado1 = new Encargado("encargado1@bar.com", "claveEncargado1", "ApellidoEncargado1", "NombreEncargado1");
-        Usuario unEncargado2 = new Encargado("encargado2@bar.com", "claveEncargado2", "ApellidoEncargado2", "NombreEncargado2");
-        Usuario unEncargado3 = new Encargado("encargado3@bar.com", "claveEncargado3", "ApellidoEncargado3", "NombreEncargado3");
-        Usuario unEncargado4 = new Encargado("encargado3@bar.com", "claveEncargado4", "ApellidoEncargado4", "NombreEncargado4");
-        //encargado repetido
-
-        if(!usuarios.contains(unEncargado1))
-            usuarios.add(unEncargado1);
-        if(!usuarios.contains(unEncargado2))
-            usuarios.add(unEncargado2);
-        if(!usuarios.contains(unEncargado3))
-            usuarios.add(unEncargado3);
-        if(!usuarios.contains(unEncargado4))
-            usuarios.add(unEncargado4);
-        
-        System.out.println("Encargados");
-        System.out.println("==========");
-        for(Usuario e : usuarios) {
-            if (e instanceof Encargado) {
-                e.mostrar();
-                System.out.println();
-            }
-        }
-        System.out.println();   
-        
-        System.out.println("Todos");
-        System.out.println("=====");
-        for(Usuario u : usuarios) {
-            u.mostrar();
-            System.out.println();
-        }
-        System.out.println();
-*/
-
-//      Tercera parte
-
-        ArrayList<Usuario> usuarios = new ArrayList<>();
-        ArrayList<Producto> productos = new ArrayList<>();
-        ArrayList<Pedido> pedidos = new ArrayList<>();
-        
-        Usuario unCliente1 = new Cliente("cliente1@bar.com", "claveCliente1", "ApellidoCliente1", "NombreCliente1");        
-        Usuario unCliente2 = new Cliente("cliente2@bar.com", "claveCliente2", "ApellidoCliente2", "NombreCliente2");       
-        Usuario unCliente3 = new Cliente("cliente3@bar.com", "claveCliente3", "ApellidoCliente3", "NombreCliente3");
-        Usuario unCliente4 = new Cliente("cliente3@bar.com", "claveCliente4", "ApellidoCliente4", "NombreCliente4"); 
-        //cliente repetido
-        
-        if (!usuarios.contains(unCliente1))
-            usuarios.add(unCliente1);
-        if (!usuarios.contains(unCliente2))
-            usuarios.add(unCliente2);
-        if (!usuarios.contains(unCliente3))
-            usuarios.add(unCliente3);
-        if (!usuarios.contains(unCliente4))
-            usuarios.add(unCliente4);
-                        
-        Usuario unEmpleado1 = new Empleado("empleado1@bar.com", "claveEmpleado1", "ApellidoEmpleado1", "NombreEmpleado1");        
-        Usuario unEmpleado2 = new Empleado("empleado2@bar.com", "claveEmpleado2", "ApellidoEmpleado2", "NombreEmpleado2");        
-        Usuario unEmpleado3 = new Empleado("empleado3@bar.com", "claveEmpleado3", "ApellidoEmpleado3", "NombreEmpleado3");
-        Usuario unEmpleado4 = new Empleado("empleado3@bar.com", "claveEmpleado4", "ApellidoEmpleado4", "NombreEmpleado4");
-        //empleado repetido
-        
-        if (!usuarios.contains(unEmpleado1))
-            usuarios.add(unEmpleado1);
-        if (!usuarios.contains(unEmpleado2))
-            usuarios.add(unEmpleado2);
-        if (!usuarios.contains(unEmpleado3))
-            usuarios.add(unEmpleado3);
-        if (!usuarios.contains(unEmpleado4))
-            usuarios.add(unEmpleado4);
-        
-        Usuario unEncargado1 = new Encargado("encargado1@bar.com", "claveEncargado1", "ApellidoEncargado1", "NombreEncargado1");
-        Usuario unEncargado2 = new Encargado("encargado2@bar.com", "claveEncargado2", "ApellidoEncargado2", "NombreEncargado2");
-        Usuario unEncargado3 = new Encargado("encargado3@bar.com", "claveEncargado3", "ApellidoEncargado3", "NombreEncargado3");
-        Usuario unEncargado4 = new Encargado("encargado3@bar.com", "claveEncargado4", "ApellidoEncargado4", "NombreEncargado4");
-        //encargado repetido
-
-        if(!usuarios.contains(unEncargado1))
-            usuarios.add(unEncargado1);
-        if(!usuarios.contains(unEncargado2))
-            usuarios.add(unEncargado2);
-        if(!usuarios.contains(unEncargado3))
-            usuarios.add(unEncargado3);
-        if(!usuarios.contains(unEncargado4))
-            usuarios.add(unEncargado4);
-
-        Producto unProducto1 = new Producto(1, "Producto1", Categoria.ENTRADA, Estado.DISPONIBLE, 1.0f);        
-        Producto unProducto2 = new Producto(2, "Producto2", Categoria.PLATO_PRINCIPAL, Estado.DISPONIBLE, 2.0f);
-        Producto unProducto3 = new Producto(3, "Producto3", Categoria.POSTRE, Estado.DISPONIBLE, 3.0f);
-        Producto unProducto4 = new Producto(3, "Producto4", Categoria.POSTRE, Estado.DISPONIBLE, 4.0f);
-        //producto repetido
-        
-        if(!productos.contains(unProducto1))
-            productos.add(unProducto1);
-        if(!productos.contains(unProducto2))
-            productos.add(unProducto2);
-        if(!productos.contains(unProducto3))
-            productos.add(unProducto3);
-        if(!productos.contains(unProducto4))
-            productos.add(unProducto4);
-        
-        ArrayList<ProductoDelPedido> productosDelPedido1 = new ArrayList<>();
-        ProductoDelPedido pdp1 = new ProductoDelPedido(unProducto1, 1);
-        ProductoDelPedido pdp2 = new ProductoDelPedido(unProducto2, 2);        
-        if (!productosDelPedido1.contains(pdp1))
-            productosDelPedido1.add(pdp1);
-        if (!productosDelPedido1.contains(pdp2))
-            productosDelPedido1.add(pdp2);
-        Pedido unPedido1 = new Pedido(1, LocalDateTime.now(), productosDelPedido1, (Cliente)unCliente1);        
-        
-        ArrayList<ProductoDelPedido> productosDelPedido2 = new ArrayList<>();
-        ProductoDelPedido pdp3 = new ProductoDelPedido(unProducto1, 10);
-        ProductoDelPedido pdp4 = new ProductoDelPedido(unProducto2, 20);
-        ProductoDelPedido pdp5 = new ProductoDelPedido(unProducto1, 30);
-        //producto repetido        
-        if (!productosDelPedido2.contains(pdp3))
-            productosDelPedido2.add(pdp3);
-        if (!productosDelPedido2.contains(pdp4))
-            productosDelPedido2.add(pdp4);
-        if (!productosDelPedido2.contains(pdp5))
-            productosDelPedido2.add(pdp5);
-        Pedido unPedido2 = new Pedido(2, LocalDateTime.now(), productosDelPedido2, (Cliente)unCliente2);        
-        
-        ArrayList<ProductoDelPedido> productosDelPedido3 = new ArrayList<>();
-        ProductoDelPedido pdp6 = new ProductoDelPedido(unProducto1, 100);
-        ProductoDelPedido pdp7 = new ProductoDelPedido(unProducto2, 200);
-        if (!productosDelPedido3.contains(pdp6))
-            productosDelPedido3.add(pdp6);
-        if (!productosDelPedido3.contains(pdp7))
-            productosDelPedido3.add(pdp7);
-        Pedido unPedido3 = new Pedido(2, LocalDateTime.now(), productosDelPedido3, (Cliente)unCliente3);        
+//        ((Cliente)unCliente1).agregarPedido(unPedido1);
+//        ((Cliente)unCliente1).agregarPedido(unPedido1);
         //pedido repetido
 
-        if(!pedidos.contains(unPedido1))
-            pedidos.add(unPedido1);
-        if(!pedidos.contains(unPedido2))
-            pedidos.add(unPedido2);
-        if(!pedidos.contains(unPedido3))
-            pedidos.add(unPedido3);
-        
-        System.out.println("Pedidos");
-        System.out.println("=======");
-        for(Pedido p : pedidos) {
-            p.mostrar();
-            System.out.println();
-        }
-        System.out.println(); 
-        
-        ((Cliente)unCliente1).agregarPedido(unPedido1);
-        ((Cliente)unCliente1).agregarPedido(unPedido1);
-        //pedido repetido
-        
         System.out.println("Pedidos de " + unCliente1.verApellido() + ", " + unCliente1.verNombre());
         for(Pedido p : unCliente1.verPedidos()) {
             p.mostrar();
             System.out.println();
         }
+        System.out.println();        
+
+        Usuario unEmpleado3 = gu.obtenerUsuario("empleado3@bar.com");
+        System.out.println("Todos los pedidos (consultados por un empleado)");
+        for(Pedido p : unEmpleado3.verPedidos()) {
+            p.mostrar();
+            System.out.println();
+        }
+        System.out.println();
+                
+        Usuario unEncargado3 = gu.obtenerUsuario("encargado3@bar.com");
+        System.out.println("Todos los pedidos (consultados por un encargado)");
+        for(Pedido p : unEncargado3.verPedidos()) {
+            p.mostrar();
+            System.out.println();
+        }
         System.out.println();
         
+        Pedido unPedido1 = gPed.obtenerPedido(1);
         ((Cliente)unCliente1).cancelarPedido(unPedido1);
         System.out.println("Pedidos de " + unCliente1.verApellido() + ", " + unCliente1.verNombre());
         for(Pedido p : unCliente1.verPedidos()) {
@@ -391,6 +269,117 @@ public class ControladorPrincipal  {
             System.out.println();
         }
         System.out.println();
+        System.out.println(gu.existeEsteUsuario(unCliente1));
+        Usuario unCliente10 = new Cliente("cliente10@bar.com", "claveCliente10", "ApellidoCliente10", "NombreCliente10");
+        //usuario inexistente
+        System.out.println(gu.existeEsteUsuario(unCliente10));
+        
+        System.out.println(gu.borrarUsuario(unCliente1));
+        //pedido con cliente
+        Usuario unCliente3 = gu.obtenerUsuario("cliente3@bar.com");
+        System.out.println(gu.borrarUsuario(unCliente3));        
+        //sí se puede
+        
+        System.out.println(gu.borrarUsuario(unEmpleado3));
+        //sí se puede
+        
+        System.out.println(gu.borrarUsuario(unEncargado3));
+        //sí se puede
+        
+        System.out.println("Usuarios");
+        System.out.println("========");
+        for(Usuario u : gu.verUsuarios()) {
+            u.mostrar();
+            System.out.println();
+        }
+        System.out.println();
+        
+        ArrayList<Usuario> usuariosBuscados = gu.buscarUsuarios("ApellidoCliente");
+        System.out.println("Usuarios filtrados");
+        System.out.println("==================");
+        for(Usuario u : usuariosBuscados) {
+            u.mostrar();
+            System.out.println();
+        }
+        System.out.println();
+        
+        System.out.println(gp.existeEsteProducto(unProducto1));
+        Producto unProducto10 = new Producto(10, "Producto10", Categoria.ENTRADA, Estado.DISPONIBLE, 10.0f);
+        //producto inexistente
+        System.out.println(gp.existeEsteProducto(unProducto10));
+        
+        System.out.println(gp.borrarProducto(unProducto1));
+        //pedido con producto
+        Producto unProducto3 = gp.obtenerProducto(3);
+        System.out.println(gp.borrarProducto(unProducto3));        
+        //sí se puede
+        
+        System.out.println("Productos");
+        System.out.println("=========");
+        for(Producto p : gp.menu()) {
+            p.mostrar();
+            System.out.println();
+        }
+        System.out.println();
+        
+        ArrayList<Producto> productosBuscados = gp.verProductosPorCategoria(Categoria.POSTRE);
+        System.out.println("Productos filtrados");
+        System.out.println("===================");
+        for(Producto p : productosBuscados) {
+            p.mostrar();
+            System.out.println();
+        }
+        System.out.println();
+        
+        productosBuscados = gp.buscarProductos("Producto");
+        System.out.println("Productos buscados");
+        System.out.println("==================");
+        for(Producto p : productosBuscados) {
+            p.mostrar();
+            System.out.println();
+        }
+        System.out.println();
+      
+        System.out.println(gp.modificarProducto(unProducto1, 100, "Producto11", 10.0f, Categoria.PLATO_PRINCIPAL, Estado.NO_DISPONIBLE));
+        //se le cambia la descripción, precio, categoría y estado
+        //el código, por más que se lo pasa, no se modifica
+        productosBuscados = gp.buscarProductos("Producto11");
+        System.out.println("Productos buscados");
+        System.out.println("==================");
+        for(Producto p : productosBuscados) {
+            p.mostrar();
+            System.out.println();
+        }
+        System.out.println();
+        
+        System.out.println(gPed.existeEstePedido(unPedido1));
+        Pedido unPedido10 = gPed.obtenerPedido(10);
+        //pedido inexistente
+        System.out.println(gPed.existeEstePedido(unPedido10));
+        
+        Pedido unPedido2 = gPed.obtenerPedido(2);
+        System.out.println(gPed.cambiarEstado(unPedido2));
+        
+        System.out.println("Pedidos");
+        System.out.println("=======");
+        for(Pedido p : gPed.verPedidos()) {
+            p.mostrar();
+            System.out.println();
+        }
+        System.out.println();  
+        
+        System.out.println(gPed.cancelarPedido(unPedido2));
+        //no se puede por el estado del pedido
+        System.out.println(gPed.cancelarPedido(unPedido1));
+        //sí se puede
+        
+        System.out.println("Pedidos");
+        System.out.println("=======");
+        for(Pedido p : gPed.verPedidos()) {
+            p.mostrar();
+            System.out.println();
+        }
+        System.out.println();  
+        
     } 
-
 }
