@@ -5,6 +5,7 @@
  */
 package productos.vistas;
 
+import interfaces.IControladorAMProducto;
 import java.awt.Dialog;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
@@ -17,36 +18,20 @@ import productos.modelos.ModeloComboEstados;
 import productos.modelos.Producto;
 
 public class VentanaAMProducto extends JDialog {
-    private ArrayList<Producto> productos = new ArrayList<>();
+    private IControladorAMProducto controlador;
     
     /**
      * Constructor
+     * @param controlador controlador de la ventana
      * @param ventanaPadre ventana padre (VentanaUsuarios en este caso)
      */
-    public VentanaAMProducto(Dialog ventanaPadre) {
+    public VentanaAMProducto(IControladorAMProducto controlador, Dialog ventanaPadre) {
         super(ventanaPadre, true);
         initComponents(); 
-        this.configurarComboCategorias();
-        this.configurarComboEstados();
+        this.controlador = controlador;           
     }
     
-    /**
-     * Configura el combo de categorias
-     */
-    private void configurarComboCategorias() {
-        ModeloComboCategorias mcc = new ModeloComboCategorias();
-        this.comboCategoria.setModel(mcc);
-        
-    }
     
-    /**
-     * Configura el combo de estados
-     */
-    private void configurarComboEstados() {
-        ModeloComboEstados mce = new ModeloComboEstados();
-        this.comboEstado.setModel(mce);
-        
-    }
     /**
      * Devuelve el campo txtCodigo
      * @return JTextField  - campo txtCodigo
@@ -213,25 +198,11 @@ public class VentanaAMProducto extends JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelarClic(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarClic
-        this.dispose();
+        this.controlador.btnCancelarClic(evt);
     }//GEN-LAST:event_btnCancelarClic
 
     private void btnGuardarClic(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarClic
-        int codigo = Integer.parseInt(this.txtCodigo.getText().trim());
-        String descripcion = this.txtDescripcion.getText().trim();
-        float precio = Float.parseFloat(this.txtPrecio.getText().trim());
-        Categoria categoria = ((ModeloComboCategorias)this.comboCategoria.getModel()).obtenerCategoria();
-        Estado estado = ((ModeloComboEstados)this.comboEstado.getModel()).obtenerEstado();
-        Producto unProducto = new Producto(codigo, descripcion, categoria, estado, precio);
-        if (!this.productos.contains(unProducto))
-            this.productos.add(unProducto);
-        
-        System.out.println("Productos");
-        System.out.println("=========");
-        for(Producto p : this.productos) {
-            p.mostrar();
-            System.out.println();
-        }
+        this.controlador.btnGuardarClic(evt);
     }//GEN-LAST:event_btnGuardarClic
 
 

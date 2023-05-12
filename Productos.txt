@@ -1,3 +1,3 @@
+1:Producto1:1.0:Entrada:Disponible
 2:Producto2:2.0:Plato principal:Disponible
 3:Producto3:3.0:Postre:Disponible
-1:Producto1:1.0:Entrada:Disponible

@@ -5,75 +5,63 @@
  */
 package principal.controladores;
 
+import interfaces.IControladorPrincipal;
+import interfaces.IControladorProductos;
+import java.awt.event.ActionEvent;
 import javax.swing.UIManager;
-import productos.vistas.VentanaAMProducto;
-import usuarios.vistas.VentanaAMCliente;
-import usuarios.vistas.VentanaAMEmpleado;
-import usuarios.vistas.VentanaAMEncargado;
+import principal.vistas.VentanaPrincipal;
+import productos.controladores.ControladorProductos;
+
 
 /**
  *
  * @author root
  */
-public class ControladorPrincipalGUI {
+public class ControladorPrincipalGUI implements IControladorPrincipal {
+    private VentanaPrincipal ventana; 
+
+    public ControladorPrincipalGUI() {
+        this.ventana = new VentanaPrincipal(this);
+        this.ventana.setLocationRelativeTo(null);
+        this.ventana.setTitle(this.generarTituloVentana());
+        this.ventana.setVisible(true);       
+    }
+    
+    /**
+     * Genera el título que se muestra en la ventana
+     * @return String  - título que se muestra en la ventana
+    */
+    private String generarTituloVentana() {  
+        return TITULO;
+    }
+    
+    @Override
+    public void btnUsuariosClic(ActionEvent evt) {
+        
+    }
+
+    @Override
+    public void btnProductosClic(ActionEvent evt) {
+        IControladorProductos cp = new ControladorProductos(this.ventana);
+    }
+
+    @Override
+    public void btnPedidosClic(ActionEvent evt) {
+        
+    }
+
+    @Override
+    public void btnSalirClic(ActionEvent evt) {
+        this.ventana.dispose();
+    }
+    
+    
     public static void main(String[] args) {
         establecerLookAndFeel("Nimbus"); 
         //asigna el look and feel "Nimbus" a la ventana
-        
-        //Se crea la ventana
-        VentanaAMProducto ventana = new VentanaAMProducto(null);
-        
-        //Se centra la ventana
-        ventana.setLocationRelativeTo(null);
-        
-        ventana.setTitle("Nuevo producto");
-        //Se asigna un título a la ventana
-        
-        //Se hace visible la ventana
-        ventana.setVisible(true);
-        
 
-/*
-        //Se crea la ventana
-        VentanaAMCliente ventana = new VentanaAMCliente(null);
+        IControladorPrincipal cp = new ControladorPrincipalGUI();
         
-        //Se centra la ventana
-        ventana.setLocationRelativeTo(null);
-        
-        ventana.setTitle("Nuevo cliente");
-        //Se asigna un título a la ventana
-        
-        //Se hace visible la ventana
-        ventana.setVisible(true);
-*/        
-        
-/*
-        //Se crea la ventana
-        VentanaAMEmpleado ventana = new VentanaAMEmpleado(null);
-        
-        //Se centra la ventana
-        ventana.setLocationRelativeTo(null);
-        
-        ventana.setTitle("Nuevo empleado");
-        //Se asigna un título a la ventana
-        
-        //Se hace visible la ventana
-        ventana.setVisible(true);
-*/
-
-/*
-        //Se crea la ventana
-        VentanaAMEncargado ventana = new VentanaAMEncargado(null);
-        
-        //Se centra la ventana
-        ventana.setLocationRelativeTo(null);
-        
-        ventana.setTitle("Nuevo encargado");
-        //Se asigna un título a la ventana
-        
-        //Se hace visible la ventana
-        ventana.setVisible(true);
-*/
     }
     
     /**
