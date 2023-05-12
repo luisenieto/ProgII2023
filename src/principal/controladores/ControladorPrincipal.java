@@ -234,11 +234,6 @@ public class ControladorPrincipal  {
         }
         System.out.println();        
 
-        
-//        ((Cliente)unCliente1).agregarPedido(unPedido1);
-//        ((Cliente)unCliente1).agregarPedido(unPedido1);
-        //pedido repetido
-
         System.out.println("Pedidos de " + unCliente1.verApellido() + ", " + unCliente1.verNombre());
         for(Pedido p : unCliente1.verPedidos()) {
             p.mostrar();
