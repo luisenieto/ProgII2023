@@ -1,5 +1,0 @@
-admin@admin.com:123456:admin:admin:Encargado
-luisenieto@gmail.com:123456:Nieto:Luis:Cliente
-lula@gmail.com:123456:Nieto:Lula:Empleado
-lula1@gmail.com:123456:Nieto:Lula1:Cliente
-lula2@gmail.com:123456:Nieto4:Lula4:Cliente

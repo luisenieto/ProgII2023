@@ -5,6 +5,9 @@
  */
 package productos.modelos;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author root
@@ -24,4 +27,17 @@ public enum Categoria {
     public String toString() {
         return this.valor;
     }    
+    
+    /**
+     * Transforma una cadena en el valor de su enumeración correspondiente
+     * @param categoria cadena que representa una categoría
+     * @return Categoria  - enumeración Categoria
+    */
+    public static Categoria verCategoria(String categoria) {
+        Map<String, Categoria> mapeo = new HashMap<>();
+        for (Categoria c : Categoria.values()) {
+            mapeo.put(c.toString(), c);
+        }
+        return mapeo.get(categoria);
+    }
 }

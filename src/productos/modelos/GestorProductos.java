@@ -7,10 +7,17 @@ package productos.modelos;
 
 import interfaces.IGestorPedidos;
 import interfaces.IGestorProductos;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.swing.JOptionPane;
 import pedidos.modelos.GestorPedidos;
 
 /**
@@ -18,6 +25,11 @@ import pedidos.modelos.GestorPedidos;
  * @author root
  */
 public class GestorProductos implements IGestorProductos {
+    private final String NOMBRE_ARCHIVO = "./Productos.txt";
+    //nombre del archivo con los productos
+    private final char SEPARADOR = ':'; 
+    //caracter usado como separador 
+    
     private static GestorProductos gestor;
     
     private List<Producto> productos = new ArrayList<>();
@@ -26,7 +38,10 @@ public class GestorProductos implements IGestorProductos {
      * Constructor
      */
     private GestorProductos() {
-        
+        String resultado = this.leerArchivo();
+        if ((resultado.equals(LECTURA_ERROR)) || (resultado.equals(CREACION_ERROR))) {
+            JOptionPane.showMessageDialog(null, resultado, "Bar", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     /**
@@ -51,7 +66,8 @@ public class GestorProductos implements IGestorProductos {
             producto = new Producto(codigo, descripcion, categoria, estado, precio);
             if (!this.productos.contains(producto)) { //no existe el producto
                 this.productos.add(producto);
-                return EXITO;
+                String resultado = this.escribirArchivo();
+                return (resultado.equals(ESCRITURA_OK) ? EXITO : resultado);
             }
             else //ya existe un producto con ese código
                 return PRODUCTOS_DUPLICADOS;
@@ -151,7 +167,8 @@ public class GestorProductos implements IGestorProductos {
             productoAModificar.asignarCategoria(categoria);
             productoAModificar.asignarEstado(estado);
             this.productos.set(posicion, productoAModificar);
-            return EXITO;
+            String resultado = this.escribirArchivo();
+            return (resultado.equals(ESCRITURA_OK) ? EXITO : resultado);
         }
     }
 
@@ -194,7 +211,8 @@ public class GestorProductos implements IGestorProductos {
                 return PEDIDO_CON_PRODUCTO;
             else { //no hay pedidos con este producto
                 this.productos.remove(producto);
-                return EXITO;
+                String resultado = this.escribirArchivo();
+                return (resultado.equals(ESCRITURA_OK) ? EXITO : resultado);
             }
         }
         else
@@ -231,6 +249,90 @@ public class GestorProductos implements IGestorProductos {
         }
     }
     
+    /**
+     * Lee del archivo de texto y carga el ArrayList empleando un try con
+     * recursos
+     * https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
+     * Formato del archivo (suponiendo que la coma sea el separador):
+     * codigo1,descripcion1,precio1,categoria1,estado1
+     * codigo2,descripcion2,precio2,categoria2,estado2
+     * codigo3,descripcion3,precio3,categoria1,estado1
+     *
+     * @return String - cadena con el resultado de la operacion (LECTURA_OK |
+     * LECTURA_ERROR | | CREACION_OK | CREACION_ERROR)
+    */
+    private String leerArchivo() {
+        File file = new File(NOMBRE_ARCHIVO);
+        if (!file.exists()) {
+            return this.crearArchivo();
+        }
+
+        try ( BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String cadena;
+            while ((cadena = br.readLine()) != null) {
+                String[] vector = cadena.split(Character.toString(SEPARADOR));
+                int codigo = Integer.parseInt(vector[0]);
+                String descripcion = vector[1];
+                float precio = Float.parseFloat(vector[2]);
+                String cadenaCategoria = vector[3];
+                Categoria categoria = Categoria.verCategoria(cadenaCategoria);
+                String cadenaEstado = vector[4];
+                Estado estado = Estado.verEstado(cadenaEstado);
+                Producto producto = new Producto(codigo, descripcion, categoria, estado, precio);
+                this.productos.add(producto);
+            }
+            
+            this.productos.add(new Producto(-1, "", Categoria.ENTRADA, Estado.DISPONIBLE, -1));
+            this.productos.add(new Producto(-2, "", Categoria.PLATO_PRINCIPAL, Estado.DISPONIBLE, -1));
+            this.productos.add(new Producto(-3, "", Categoria.POSTRE, Estado.DISPONIBLE, -1));
+            //estos 3 productos son para mostrar "más lindo" el menú
+            return LECTURA_OK;
+        } catch (IOException ioe) {
+            return LECTURA_ERROR;
+        }
+    }    
     
+    /**
+     * Crea el archivo
+     *
+     * @return String - cadena con el resultado de la operacion (CREACION_OK | CREACION_ERROR)
+    */
+    private String crearArchivo() {
+        File file = new File(NOMBRE_ARCHIVO);
+        try ( FileWriter fw = new FileWriter(file)) {
+            return CREACION_OK;
+        } catch (IOException ioe) {
+            return CREACION_ERROR;
+        }
+    }
+    
+    /**
+     * Escribe en el archivo de texto el ArrayList
+     * Formato del archivo (suponiendo que la coma sea el separador):
+     *  correo1,clave1,apellido1,nombre1,perfil1
+     *  correo2,clave2,apellido2,nombre2,perfil2
+     *  correo3,clave3,apellido3,nombre3,perfil3 
+     * @return String  - cadena con el resultado de la operacion (ESCRITURA_ERROR | ESCRITURA_OK)
+    */
+    private String escribirArchivo() {
+        File file = new File(NOMBRE_ARCHIVO);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {     
+            for(Producto producto : this.productos) {
+                if (producto.verPrecio() > 0) {
+                    String cadena = Integer.toString(producto.verCodigo()) + SEPARADOR;
+                    cadena += producto.verDescripcion() + SEPARADOR;
+                    cadena += Float.toString(producto.verPrecio()) + SEPARADOR;
+                    cadena += producto.verCategoria().toString() + SEPARADOR;
+                    cadena += producto.verEstado().toString();
+                    bw.write(cadena);
+                    bw.newLine();
+                }
+            }
+            return ESCRITURA_OK;
+        } 
+        catch (IOException ioe) {
+            return ESCRITURA_ERROR;            
+        }
+    }    
     
 }

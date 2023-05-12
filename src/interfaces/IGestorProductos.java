@@ -14,7 +14,15 @@ import productos.modelos.Producto;
  *
  * @author root
  */
-public interface IGestorProductos {    
+public interface IGestorProductos { 
+    //Constantes para las operaciones de E/S
+    public static final String LECTURA_ERROR = "Error al leer los productos";
+    public static final String CREACION_ERROR = "Error al crear el archivo de productos";
+    public static final String LECTURA_OK = "Se pudieron leer los productos";
+    public static final String CREACION_OK = "Se pudo crear el archivo de productos";
+    public static final String ESCRITURA_OK = "Se pudieron guardar los productos";  
+    public static final String ESCRITURA_ERROR = "Error al guardar los productos";
+    
     //Constantes para el ABM de productos
     public static final String EXITO = "Producto creado/modificado/borrado con éxito";
     public static final String ERROR_CODIGO = "El código del producto es incorrecto";  
